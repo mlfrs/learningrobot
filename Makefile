@@ -14,14 +14,14 @@ LINKLIBS = -m64
 COMPILER = g++ -m64
 
 #
-# Specify our compiler and linker settings
+# Specify compiler and linker settings
 # 
 
 COMPILE = $(COMPILER) $(COMPOPTS) $(INCLUDES)
 LINKER = $(COMPILER) $(LINKOPTS) 
 
 #
-# Compile main
+# Compile main / mlfrs
 #
 
 all : main.o someclass.o
@@ -37,9 +37,6 @@ someclass.o : someclass.cc someclass.h
 main.o : main.cc
 	${COMPILE} main.cc
 
-# clean
-#	.PHONY: clean
-
-clean: 
+clean : 
 	rm *.o mlfrs
 
