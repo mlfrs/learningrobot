@@ -31,7 +31,7 @@ all : main.o someclass.o
 # Compile modules
 #
 
-main.o : someclass.cc someclass.h
+someclass.o : someclass.cc someclass.h
 	${COMPILE} someclass.cc
 
 main.o : main.cc
