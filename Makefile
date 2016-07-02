@@ -41,5 +41,5 @@ main.o : main.cc
 #	.PHONY: clean
 
 clean: 
-	rm *.o main
+	rm *.o mlfrs
 
