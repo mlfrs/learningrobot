@@ -20,13 +20,14 @@ COMPILER = g++ -m64
 #
 
 PROTOBUF = 'protobuf'
+SIMBODY = 'simbody'
 
 #
 # Compiler flags
 #
 
-LD_FLAGS  = $(shell pkg-config --libs $(PROTOBUF))
-CXX_FLAGS  = $(shell pkg-config --cflags $(PROTOBUF))
+LD_FLAGS  = $(shell pkg-config --libs $(PROTOBUF) $(SIMBODY))
+CXX_FLAGS  = $(shell pkg-config --cflags $(PROTOBUF) $(SIMBODY))
 
 #
 # Specify compiler and linker settings
