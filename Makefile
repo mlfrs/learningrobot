@@ -13,11 +13,14 @@ LOCALINC = /usr/local/include/
 
 COMPOPTS = -O2 -c -g -std=c++11
 LINKOPTS = -O2 -g -lstdc++ -lm -std=c++11
-COMPILER = g++ -m64
+COMPILER = g++ -m64 -o $(BUILDDIR)$@
+BUILDDIR = 'build/'
 
 # 
 # pkg-config flags
 #
+
+PKG_CONFIG_PATH = '/usr/lib/pkgconfig:/usr/local/lib/pkgconfig/'
 
 PROTOBUF = 'protobuf'
 SIMBODY = 'simbody'
@@ -26,8 +29,8 @@ SIMBODY = 'simbody'
 # Compiler flags
 #
 
-LD_FLAGS  = $(shell pkg-config --libs $(PROTOBUF) $(SIMBODY))
-CXX_FLAGS  = $(shell pkg-config --cflags $(PROTOBUF) $(SIMBODY))
+LD_FLAGS  = $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config --libs $(PROTOBUF) $(SIMBODY))
+CXX_FLAGS  = $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config --cflags $(PROTOBUF) $(SIMBODY))
 
 #
 # Specify compiler and linker settings
@@ -41,7 +44,7 @@ LINKER = $(COMPILER) $(LINKOPTS) $(LD_FLAGS)
 #
 
 all : main.o someclass.o
-	${LINKER} -o mlfrs main.o someclass.o
+	${LINKER} -o mlfrs $(BUILDDIR)main.o $(BUILDDIR)someclass.o
 
 #
 # Compile modules
@@ -54,5 +57,5 @@ main.o : main.cc
 	${COMPILE} main.cc
 
 clean : 
-	rm *.o mlfrs
+	-@rm build/*.o mlfrs 2>/dev/null || true
 

@@ -26,27 +26,27 @@
         $ mv simbody-Simbody-3.5.3/ ~/simbody-source
         - or 
         $ git clone https://github.com/simbody/simbody.git ~/simbody-source
-        $ git checkout Simbody-3.5.3
+        $ cd ~/simbody-source
+		$ git checkout Simbody-3.5.3
 
         - Build with cmake & make (for other options look at their README.md)
         $ cmake ~/simbody-source -DCMAKE_INSTALL_PREFIX=~/simbody -DCMAKE_BUILD_TYPE=RelWithDebInfo
         $ make 
         $ sudo make install
 
-        - Simbody should now be installed, but for some reason they don't seem to add pkg-config by default
-        $ sudo cp ~/simbody-source/cmake/pkgconfig/simbody.pc /usr/lib/pkgconfig/
+        - Simbody should now be installed, but for me it didn't seem to work..
+		- So I did it manually.
+		$ sudo cp ~/simbody/lib64/lib* /usr/local/lib/
+		$ sudo cp ~/simbody/lib64/pkgconfig/simbody.pc /usr/lib/pkgconfig/
         $ sudo chmod 644 /usr/lib/pkgconfig/simbody.pc
 
-        - It also didn't install the headers so you may need to manually copy them.. (ugh.. there are more than this too)
-        $ sudo chmod -R 644 ~/simbody-source/Simbody/include/
-        $ sudo chmod -R 644 ~/simbody-source/SimTKcommon/include/
-        $ sudo chmod -R 644 ~/simbody-source/SimTKmath/include/
-        $ sudo cp -R ~/simbody-source/Simbody/include/* /usr/local/include/
-        $ sudo cp -R ~/simbody-source/SimTKcommon/include/* /usr/local/include/
-        $ sudo cp -R ~/simbody-source/SimTKmath/include/* /usr/local/include/
-        $ for i in $(find .  |grep '/SimTKcommon/internal');do sudo cp $i /usr/local/include/SimTKcommon/internal/;done
+        - It also didn't install the headers, this is messy but something like this..
+		$ sudo cp -R ~/simbody/include/* /usr/local/include/
+		$ sudo cp -R ~/simbody/include/simbody/* /usr/local/include/
+		$ sudo chmod -R 755 /usr/local/include/sim*
+		$ sudo chmod -R 755 /usr/local/include/Sim*
 
-        - Some additional libraries are also required for the linker.
+        - Finally some additional libraries are also required for the linker.
         $ sudo apt-get install liblapack-dev
 
         # Now it should be good to go, you can test by trying to make the Makefile
