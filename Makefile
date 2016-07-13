@@ -43,8 +43,8 @@ LINKER = $(COMPILER) $(LINKOPTS) $(LD_FLAGS)
 # Compile main / mlfrs
 #
 
-all : main.o someclass.o
-	${LINKER} -o mlfrs $(BUILDDIR)main.o $(BUILDDIR)someclass.o
+all : main.o someclass.o physics.o mlfrs_simbody.o
+	${LINKER} -o mlfrs $(BUILDDIR)main.o $(BUILDDIR)someclass.o $(BUILDDIR)physics.o $(BUILDDIR)mlfrs_simbody.o
 
 #
 # Compile modules
@@ -52,6 +52,12 @@ all : main.o someclass.o
 
 someclass.o : someclass.cc someclass.h
 	${COMPILE} someclass.cc
+
+physics.o : physics/physics.cc physics/physics.h
+	${COMPILE} physics/physics.cc
+
+mlfrs_simbody.o : physics/mlfrs_simbody.cc physics/mlfrs_simbody.h
+	${COMPILE} physics/mlfrs_simbody.cc
 
 main.o : main.cc
 	${COMPILE} main.cc
