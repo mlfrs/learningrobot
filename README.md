@@ -51,3 +51,12 @@
 
         # Now it should be good to go, you can test by trying to make the Makefile
 
+    - jsoncpp https://github.com/open-source-parsers/jsoncpp
+		(required scons) I built from source, but should be something like.
+		$ sudo apt-get install scons
+		$ sudo apt-get install libjsoncpp-dev
+
+	- Eigen3 https://github.com/open-source-parsers/jsoncpp
+		again built from source but should be..
+		$ sudo apt-get install libeigen3-dev
+
