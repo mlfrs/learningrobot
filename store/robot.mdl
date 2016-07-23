@@ -7,124 +7,124 @@
 			"mass" : "5.0",
 			"dimension" : [ "1.0" ],
 			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
-			"position" : [ "1.0", "20.0", "0.0" ]
+			"position" : [ "0.0", "20.5", "0.0" ]
 		},
 		"body" : {
 			"name" : "body",
 			"graphics_mesh" : "body",
 			"physics_shape" : "box",
 			"mass" : "40.0",
-			"dimension" : [ "1.5", "4.0", "1.0" ],
+			"dimension" : [ "1.8", "4.0", "0.7" ],
 			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
-			"position" : [ "1.0", "15.0", "0.0" ]
+			"position" : [ "0.0", "15.0", "0.0" ]
 		},
 		"right_upperarm" : {
 			"graphics_mesh" : "arm",
-			"physics_shape" : "box",
+			"physics_shape" : "cylinder",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.60000", "2.00000", "0.60000" ],
+			"dimension" : [ "0.50000", "2.00000", "0.60000" ],
 			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
-			"position" : [ "-4.0", "16.5", "0.0" ]
+			"position" : [ "-3.0", "16.5", "0.0" ]
 		},
 		"left_upperarm" : {
 			"graphics_mesh" : "arm",
-			"physics_shape" : "box",
+			"physics_shape" : "cylinder",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.60000", "2.00000", "0.60000" ],
+			"dimension" : [ "0.50000", "2.00000", "0.60000" ],
 			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
-			"position" : [ "4.0", "16.5", "0.0" ]
+			"position" : [ "3.0", "16.5", "0.0" ]
 		},
 		"right_forearm" : {
 			"graphics_mesh" : "arm",
-			"physics_shape" : "box",
+			"physics_shape" : "cylinder",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.60000", "2.00000", "0.60000" ],
+			"dimension" : [ "0.40000", "2.00000", "0.60000" ],
 			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
-			"position" : [ "-4.0", "12.3", "0.0" ]
+			"position" : [ "-3.0", "12.3", "0.0" ]
 		},
 		"left_forearm" : {
 			"graphics_mesh" : "arm",
-			"physics_shape" : "box",
+			"physics_shape" : "cylinder",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.60000", "2.00000", "0.60000" ],
+			"dimension" : [ "0.40000", "2.00000", "0.60000" ],
 			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
-			"position" : [ "4.0", "12.3", "0.0" ]
+			"position" : [ "3.0", "12.3", "0.0" ]
 		},
 		"right_hand" : {
 			"graphics_mesh" : "hand",
 			"physics_shape" : "box",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.50000", "0.50000", "0.50000" ],
+			"dimension" : [ "0.20000", "0.80000", "0.50000" ],
 			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
-			"position" : [ "-4.0", "8.8", "0.0" ]
+			"position" : [ "-3.0", "9.2", "0.0" ]
 		},
 		"left_hand" : {
 			"graphics_mesh" : "hand",
 			"physics_shape" : "box",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.50000", "0.50000", "0.50000" ],
+			"dimension" : [ "0.20000", "0.80000", "0.50000" ],
 			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
-			"position" : [ "4.0", "8.8", "0.0" ]
+			"position" : [ "3.0", "9.2", "0.0" ]
 		},
 		"right_upperleg" : {
 			"graphics_mesh" : "leg",
-			"physics_shape" : "box",
+			"physics_shape" : "cylinder",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.60000", "2.00000", "0.60000" ],
+			"dimension" : [ "0.50000", "2.00000", "0.60000" ],
 			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
-			"position" : [ "-1.5", "8.0", "0.0" ]
+			"position" : [ "-1.5", "8.5", "0.0" ]
 		},
 		"left_upperleg" : {
 			"graphics_mesh" : "leg",
-			"physics_shape" : "box",
+			"physics_shape" : "cylinder",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.60000", "2.00000", "0.60000" ],
+			"dimension" : [ "0.50000", "2.00000", "0.60000" ],
 			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
-			"position" : [ "1.5", "8.0", "0.0" ]
+			"position" : [ "1.5", "8.5", "0.0" ]
 		},
 		"right_foreleg" : {
 			"graphics_mesh" : "leg",
-			"physics_shape" : "box",
+			"physics_shape" : "cylinder",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.60000", "2.00000", "0.60000" ],
+			"dimension" : [ "0.40000", "2.00000", "0.60000" ],
 			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
-			"position" : [ "-1.5", "3.5", "0.0" ]
+			"position" : [ "-1.5", "4.0", "0.0" ]
 		},
 		"left_foreleg" : {
 			"graphics_mesh" : "leg",
-			"physics_shape" : "box",
+			"physics_shape" : "cylinder",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.60000", "2.00000", "0.60000" ],
+			"dimension" : [ "0.40000", "2.00000", "0.60000" ],
 			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
-			"position" : [ "1.5", "3.5", "0.0" ]
+			"position" : [ "1.5", "4.0", "0.0" ]
 		},
 		"right_foot" : {
 			"graphics_mesh" : "foot",
 			"physics_shape" : "box",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.50000", "0.50000", "0.50000" ],
+			"dimension" : [ "0.50000", "0.20000", "1.50000" ],
 			"rotation" : [ "1.00000", "0.00000", "0.000000", "1.570000" ],
-			"position" : [ "-1.5", "1.0", "0.0" ]
+			"position" : [ "-1.5", "1.4", "-1.0" ]
 		},
 		"left_foot" : {
 			"graphics_mesh" : "foot",
 			"physics_shape" : "box",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
-			"dimension" : [ "0.50000", "0.50000", "0.50000" ],
+			"dimension" : [ "0.50000", "0.20000", "1.50000" ],
 			"rotation" : [ "1.00000", "0.00000", "0.000000", "1.570000" ],
-			"position" : [ "1.5", "1.0", "0.0" ]
+			"position" : [ "1.5", "1.4", "-1.0" ]
 		}
 	},
 	"joints" : {
