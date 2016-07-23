@@ -10,60 +10,99 @@
 
 #include "mlfrs_simbody.h"
 #include "Simbody.h"
+#include "SimTKsimbody.h"
+#include "simbody/internal/ForceSubsystemGuts.h"
 
 using namespace SimTK;
 
-static SimTK::MobilizedBody::Pin *placeHolder;
+static SimTK::MobilizedBody::Pin* placeHolder;
 static SimTK::State state;
 
-MlfrsSimbody::MlfrsSimbody() : matter(system), 
-				 forces(system), 
-				 gravity(forces, matter, SimTK::Vec3(0, -9.81, 0))
-				 {}
+MlfrsSimbody::MlfrsSimbody() :	matter(simbody_sys), 
+								forces(simbody_sys), 
+								gravity(forces, matter, SimTK::Vec3(0, -9.81, 0))
+								{}
 
-void MlfrsSimbody::createSphere(MdlParser::mdl_object object, PhysicsBody* physicsBody) {
+// const System::Guts &ggg = simbody_sys.getSystemGuts();
 
+void MlfrsSimbody::createBox(MdlParser::mdl_object object, MobilizedBody physicsBody) {
+	try {
+	    Body::Rigid bodyInfo(MassProperties(object.mass, Vec3(0), UnitInertia(1)));
+		bodyInfo.addDecoration(Transform(), DecorativeBrick(
+			Vec3(object.dimension[0],object.dimension[1],object.dimension[2])));
+		physicsBody = MobilizedBody::Free(matter.Ground(), Transform(Vec3(0)),
+			bodyInfo, Transform(Vec3(object.position[0],object.position[1],object.position[2])));
+		simbodyObject sbo = { physicsBody, "free" };
+	 	simbodyObjects.push_back(sbo);
+	} catch (const std::exception& e) {
+		std::cout << "Error in createSphere() : " << e.what() << std::endl;
+		exit;
+	}
+}
 
-	Body::Rigid bodyInfo = physicsBody->getSimbody();
-	bodyInfo.addDecoration(Transform(), DecorativeSphere(object.dimension[0]));
+void MlfrsSimbody::createSphere(MdlParser::mdl_object object, MobilizedBody physicsBody) {
+	try {
+	    Body::Rigid bodyInfo(MassProperties(object.mass, Vec3(0), UnitInertia(1)));
+		bodyInfo.addDecoration(Transform(), DecorativeSphere(object.dimension[0]));
+		physicsBody = MobilizedBody::Free(matter.Ground(), Transform(Vec3(0)),
+			bodyInfo, Transform(Vec3(object.position[0],object.position[1],object.position[2])));
+		simbodyObject sbo = { physicsBody, "free" };
+	 	simbodyObjects.push_back(sbo);
+	} catch (const std::exception& e) {
+		std::cout << "Error in createSphere() : " << e.what() << std::endl;
+		exit;
+	}
+}
 
-//	MobilizedBody::Free sphere(matter.Ground(), Transform(Vec3(0)),bodyInfo, Transform(Vec3(0, 1, 0)));
-//	sphere.setDefaultTranslation(Vec3(object.position[0],object.position[1],object.position[2]));
-
-	MobilizedBody::Pin pendulum1(matter.Ground(), Transform(Vec3(0)),
-		bodyInfo, Transform(Vec3(0, 1, 0)));
-  	MobilizedBody::Pin pendulum2(pendulum1, Transform(Vec3(0)),
-		bodyInfo, Transform(Vec3(0, 1, 0)));
-
-	Visualizer viz(system);
-    system.addEventReporter(new Visualizer::Reporter(viz, 0.01));
-
-	placeHolder=&pendulum2;
-
-	// ISSUE: This is strange.. seems to only work if I execute it within this class/file . 
-	// Some weird scoping issue??
-	realize();
-	run();
+void MlfrsSimbody::createCylinder(MdlParser::mdl_object object, MobilizedBody physicsBody) {
+	try {
+	    Body::Rigid bodyInfo(MassProperties(object.mass, Vec3(0), UnitInertia(1)));
+		bodyInfo.addDecoration(Transform(), DecorativeCylinder(
+			object.dimension[0],object.dimension[1]));
+		physicsBody = MobilizedBody::Free(matter.Ground(), Transform(Vec3(0)),
+			bodyInfo, Transform(Vec3(object.position[0],object.position[1],object.position[2])));
+		simbodyObject sbo = { physicsBody, "free" };
+	 	simbodyObjects.push_back(sbo);
+	} catch (const std::exception& e) {
+		std::cout << "Error in createSphere() : " << e.what() << std::endl;
+		exit;
+	}
 }
 
 void MlfrsSimbody::visualize() {
-	Visualizer viz(system);
-    system.addEventReporter(new Visualizer::Reporter(viz, 0.01));
+	try {
+		Visualizer viz(simbody_sys);
+		simbody_sys.addEventReporter(new Visualizer::Reporter(viz, 0.01));
+	} catch (const std::exception& e) {
+		exit;
+	}
 }
 
 void MlfrsSimbody::realize() {
-	state = system.realizeTopology();
+	try {
+		state = simbody_sys.realizeTopology();
+	} catch  (const std::exception& e) {
+		std::cout << "Error in realize() : " << e.what() << std::endl;
+		exit;
+	}
 }
 
 void MlfrsSimbody::run() {
-	
-	placeHolder->setRate(state, 5.0);
-
-    RungeKuttaMersonIntegrator integ(system);
-    TimeStepper ts(system, integ);
-    ts.initialize(state);
-    ts.stepTo(20.0);
-	
+	try {
+		// Here we iterate over all simbody objects and apply any extra runtime parameters.
+		for(std::vector<simbodyObject>::iterator it = simbodyObjects.begin(); it != simbodyObjects.end(); ++it) {
+			if ((*it).type == "pin") {
+				MobilizedBody::Pin m = MobilizedBody::Pin::downcast((*it).mBody);
+				m.setRate(state, 5.0);
+			}
+		}
+	    RungeKuttaMersonIntegrator integ(simbody_sys);
+	    TimeStepper ts(simbody_sys, integ);
+	    ts.initialize(state);
+		ts.stepTo(20.0);
+	} catch  (const std::exception& e) {
+		exit;
+	}
 }
 
 MlfrsSimbody::~MlfrsSimbody() {}

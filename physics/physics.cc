@@ -4,33 +4,43 @@
  * Name: physics.cc
  *
  * The physics wrapper class for generic functions
- * Different physics engines ie. bullet/simbody can 
+ * Different physics engines ie. bullet/phyEng can 
  * be initialized and called here
  *
  */
 
 #include "physics.h"
+#include "mlfrs_simbody.h"
 #include <iostream>
 
-Physics::Physics()
-{
-}
-
-void Physics::init() {
-//	simbody.visualize();
-	simbody.realize();
-	simbody.run();
+Physics::Physics(std::string engine) {
+	if (engine=="simbody") {
+		phyEng = new MlfrsSimbody();
+	} else if (engine=="bullet") {
+		// todo
+	} else {
+		std::cout << "physics.cc - no engine supplied in initializer. bailing..";
+		std::exit(0);
+	}
 }
 
 void Physics::createObject(MdlParser::mdl_object M, ObjectNode O) {
 	if (M.physics_shape == "box") {
-//		createBox(M, O, B);
+		phyEng->createBox(M, phyEng->getBody());
 	} else if (M.physics_shape == "sphere") {
-		simbody.createSphere(M, O.phybody);
+		phyEng->createSphere(M, phyEng->getBody());
 	} else if (M.physics_shape == "cylinder") {
-//		createCylinder(M, O, B);
+		phyEng->createCylinder(M, phyEng->getBody());
 	}
 }
 
-Physics::~Physics() {}
+void Physics::run() {
+	phyEng->visualize();
+	phyEng->realize();
+	phyEng->run();
+}
+
+Physics::~Physics() {
+	delete phyEng;
+}
 

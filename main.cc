@@ -13,12 +13,29 @@
 
 int main(int argc, char** argv)
 {
+	// First class. Todo remove.
 	someclass *myclass = new someclass(argc);
-	Physics *phy = new Physics();
-	ObjectManager *objectManager = new ObjectManager();
-	objectManager->addMdl("robot");
-	phy->init();
 
-	return 0 ;
+	// Instantiate physics engine.
+	Physics *physics = new Physics("simbody");
+
+	// Instantiate  Object Manager.
+	ObjectManager *objectManager = new ObjectManager(*physics);
+
+	// Try to load the model.
+	try {
+		objectManager->addMdl("robot");
+	} catch (const std::exception& e) {
+		std::cout << "Error in adding Model : " << e.what() << std::endl;
+		exit;
+	}
+
+	// Run/Step the simulation.
+	physics->run();
+
+	delete physics;
+	delete objectManager;
+
+	return 0;
 }
 

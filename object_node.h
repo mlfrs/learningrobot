@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include <Eigen/Dense>
-#include "physics/physics_body.h"
+#include "physics/physics_engine.h"
 #include "model/mdl_parser.h"
 
 class ObjectNode {
@@ -30,7 +30,7 @@ class ObjectNode {
 	bool activation_state;
 	Eigen::Vector4f position;
 	Eigen::Matrix4f orientation;
-	PhysicsBody* phybody;
+	PhysicsEngine* phybody;
 	MdlParser::mdl_object modelobject;
 
 };

@@ -11,12 +11,12 @@
 #ifndef _OBJECT_MANAGER_H_
 #define _OBJECT_MANAGER_H_
 
+#include "physics/physics.h"
+
 class ObjectManager {
 
-	private:
-
-	public:
-	ObjectManager( );
+public:
+	ObjectManager(const Physics& physics);
 
 	void addMdl(std::string model);
 	ObjectNode createObject(MdlParser::mdl_object object);
@@ -24,6 +24,9 @@ class ObjectManager {
 	void togglePhysicsVisibility();
 
 	~ObjectManager();
+
+private:
+	Physics physics;
 };
 
 #endif

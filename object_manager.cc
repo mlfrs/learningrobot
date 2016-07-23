@@ -37,14 +37,13 @@
 
 using namespace std;
 
-ObjectManager::ObjectManager() {}
+ObjectManager::ObjectManager(const Physics& physics) : physics(physics) {}
 
 int m_id = 0;
 int o_id = 0;
 int c_id = 0;
 int p_id = 0;
 
-Physics physics;
 MdlParser mdl;
 
 std::vector<typename Model::Model> models;
@@ -52,12 +51,10 @@ std::vector<typename ObjectNode::ObjectNode> objects;
 
 void ObjectManager::addMdl(string mdlfile) {
 
-	int base_oid=o_id;
-	int base_cid=c_id;
-	Model gmodel;
-	ObjectNode tmp_object;
+	Model model;
 
-	vector<ObjectNode> gobject;
+	// only modelObjects and joints are used so far.
+	vector<ObjectNode> object;
 	vector<MdlParser::mdl_object> modelObject;
 	vector<MdlParser::mdl_joint> joint;
 	vector<MdlParser::mdl_function> function;
@@ -67,14 +64,15 @@ void ObjectManager::addMdl(string mdlfile) {
 	if (!modelObject.empty()) {
 		int o_id;
 		for (int i = 0; i < modelObject.size(); i++) {
-// 	  	 if we have some separate graphics engine, can load here.
-//		    if ( object[i].component.size() > 1 ) {
-//				gfxNode.createCompoundObjectNode(object[i], N);
-//			} else {
-//				gfxNode.createObject(object[i], N);
-//			}
-			tmp_object = createObject(modelObject[i]);
-			gobject.push_back(tmp_object);
+/*
+ *	//	 if we impliment a separate visualizer it, would be setup here. eg.
+ *		    if ( object[i].component.size() > 1 ) {
+ *				gfxNode.createCompoundObjectNode(object[i], N);
+ *			} else {
+ *				gfxNode.createObject(object[i], N);
+ *			}
+ */
+			object.push_back(createObject(modelObject[i]));
 		}
 
 		int oid_a,oid_b;
@@ -90,9 +88,9 @@ void ObjectManager::addMdl(string mdlfile) {
 //			createJoint(joint[j],modelObject.size()-oid_a, modelObject.size()-oid_b);
 		}
 	}
-	gmodel.objects = gobject;
-	gmodel.model_id = m_id;
-	models.push_back(gmodel);
+	model.objects = object;
+	model.model_id = m_id;
+	models.push_back(model);
 	m_id++;
 
 }
@@ -100,7 +98,7 @@ void ObjectManager::addMdl(string mdlfile) {
 ObjectNode ObjectManager::createObject(MdlParser::mdl_object modelObject) {
 
 	ObjectNode object;
-	PhysicsBody* phybody;// = new SimbodyPhysics;
+	PhysicsEngine* phybody;
 
 	physics.createObject(modelObject, object);
 

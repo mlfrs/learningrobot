@@ -55,7 +55,7 @@ all : main.o someclass.o physics.o mlfrs_simbody.o model_parser.o object_manager
 someclass.o : someclass.cc someclass.h
 	${COMPILE} someclass.cc
 
-physics.o : physics/physics.cc physics/physics.h 
+physics.o : physics/physics.cc physics/physics.h
 	${COMPILE} physics/physics.cc
 
 mlfrs_simbody.o : physics/mlfrs_simbody.cc physics/mlfrs_simbody.h
