@@ -14,8 +14,7 @@ public:
 	virtual void createSphere(MdlParser::mdl_object object, SimTK::MobilizedBody physicsBody){}
 	virtual void createCylinder(MdlParser::mdl_object object, SimTK::MobilizedBody physicsBody){}
 	virtual void run(){}
-	virtual void realize(){}
-	virtual void visualize(){}
+	virtual void init(){}
 	virtual ~PhysicsEngine(){};
 private:
 };

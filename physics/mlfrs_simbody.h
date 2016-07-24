@@ -19,6 +19,8 @@ private:
 	SimTK::MultibodySystem simbody_sys;
 	SimTK::SimbodyMatterSubsystem matter;
 	SimTK::GeneralForceSubsystem forces;
+	SimTK::ContactTrackerSubsystem tracker;
+	SimTK::CompliantContactSubsystem contact;
 	SimTK::Force::Gravity gravity;
 
 	struct simbodyObject {
@@ -34,9 +36,12 @@ public:
 	void createBox(MdlParser::mdl_object object, SimTK::MobilizedBody physicsBody);
 	void createSphere(MdlParser::mdl_object object, SimTK::MobilizedBody physicsBody);
 	void createCylinder(MdlParser::mdl_object object, SimTK::MobilizedBody physicsBody);
+	void enableContacts();
+	void printContactSurfaces();
 	void visualize();
 	void realize();
 	void run();
+	void init();
 
 	SimTK::MobilizedBody simBody;
 	virtual SimTK::MobilizedBody getBody() { return simBody; }

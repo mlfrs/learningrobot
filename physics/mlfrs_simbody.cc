@@ -18,9 +18,22 @@ using namespace SimTK;
 static SimTK::MobilizedBody::Pin* placeHolder;
 static SimTK::State state;
 
+const float TRANSITION_VELOCITY = 1e-3;
+const float GRAVITY = - 9.81;
+const bool TRACK_DISSIPATED_ENERGY = true;
+
+// generic material. todo: these should be loaded externally.
+ContactMaterial material(0.02*1e7, // stiffness
+						 0.9,     // dissipation
+						 0.8,     // mu_static
+						 0.6,     // mu_dynamic
+						 1); // mu_viscous
+
 MlfrsSimbody::MlfrsSimbody() :	matter(simbody_sys), 
 								forces(simbody_sys), 
-								gravity(forces, matter, SimTK::Vec3(0, -9.81, 0))
+								tracker(simbody_sys),
+								contact(simbody_sys, tracker),
+								gravity(forces, matter, SimTK::Vec3(0, GRAVITY, 0))
 								{}
 
 // const System::Guts &ggg = simbody_sys.getSystemGuts();
@@ -46,6 +59,9 @@ void MlfrsSimbody::createSphere(MdlParser::mdl_object object, MobilizedBody phys
 		bodyInfo.addDecoration(Transform(), DecorativeSphere(object.dimension[0]));
 		physicsBody = MobilizedBody::Free(matter.Ground(), Transform(Vec3(0)),
 			bodyInfo, Transform(Vec3(object.position[0],object.position[1],object.position[2])));
+		bodyInfo.addContactSurface(Vec3(object.position[0],object.position[1],object.position[2]), 
+			ContactSurface(ContactGeometry::Sphere(object.dimension[0]),material)
+			.joinClique(ContactSurface::createNewContactClique()));
 		simbodyObject sbo = { physicsBody, "free" };
 	 	simbodyObjects.push_back(sbo);
 	} catch (const std::exception& e) {
@@ -69,6 +85,31 @@ void MlfrsSimbody::createCylinder(MdlParser::mdl_object object, MobilizedBody ph
 	}
 }
 
+// configure the engine/scene
+void MlfrsSimbody::init() {
+	enableContacts();
+	// add the ground
+	matter.Ground().updBody().addContactSurface(Rotation(-Pi/2,ZAxis),
+	       ContactSurface(ContactGeometry::HalfSpace(), material));
+}
+
+
+void MlfrsSimbody::enableContacts() {
+	contact.setTrackDissipatedEnergy(TRACK_DISSIPATED_ENERGY);
+    contact.setTransitionVelocity(TRANSITION_VELOCITY);
+}
+
+void MlfrsSimbody::printContactSurfaces() {
+	for (MobilizedBodyIndex mbx(0); mbx < matter.getNumBodies(); ++mbx) {
+		const MobilizedBody& mBody = matter.getMobilizedBody(mbx);
+		const int nsurfs = mBody.getBody().getNumContactSurfaces();
+		std::cout << "Movable body " << (int)mbx << " has " << nsurfs << " contact surfaces" << std::endl;
+		for (int i=0; i<nsurfs; ++i) {
+//			std::cout << " " << i << " - index : " << (int)tracker.getContactSurfaceIndex(mbx,i) << std::endl;
+		}
+	}
+}
+
 void MlfrsSimbody::visualize() {
 	try {
 		Visualizer viz(simbody_sys);
@@ -89,6 +130,10 @@ void MlfrsSimbody::realize() {
 
 void MlfrsSimbody::run() {
 	try {
+
+		visualize();
+		realize();
+
 		// Here we iterate over all simbody objects and apply any extra runtime parameters.
 		for(std::vector<simbodyObject>::iterator it = simbodyObjects.begin(); it != simbodyObjects.end(); ++it) {
 			if ((*it).type == "pin") {

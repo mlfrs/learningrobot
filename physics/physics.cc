@@ -35,12 +35,11 @@ void Physics::createObject(MdlParser::mdl_object M, ObjectNode O) {
 }
 
 void Physics::run() {
-	phyEng->visualize();
-	phyEng->realize();
+	phyEng->init();
 	phyEng->run();
 }
 
 Physics::~Physics() {
-	delete phyEng;
+//	delete phyEng;
 }
 

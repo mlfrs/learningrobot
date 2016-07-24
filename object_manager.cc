@@ -111,10 +111,6 @@ ObjectNode ObjectManager::createObject(MdlParser::mdl_object modelObject) {
 
 }
 
-//void ObjectManager::createJoint(MdlParser::mdl_joint joint, int oid_a, int oid_b) {
-//	physics.createJoint(joint, o_id-oid_a, o_id-oid_b);
-//}
-
 void ObjectManager::togglePhysicsVisibility(){
 //	gfxNode.togglePhysicsVisibility();
 }
