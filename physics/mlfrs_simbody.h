@@ -21,7 +21,7 @@ private:
 	SimTK::GeneralForceSubsystem forces;
 	SimTK::ContactTrackerSubsystem tracker;
 	SimTK::CompliantContactSubsystem contact;
-	SimTK::Force::Gravity gravity;
+	SimTK::Force::UniformGravity gravity;
 
 	struct simbodyObject {
 		SimTK::MobilizedBody mBody;
@@ -36,7 +36,6 @@ public:
 	void createBox(MdlParser::mdl_object object, SimTK::MobilizedBody physicsBody);
 	void createSphere(MdlParser::mdl_object object, SimTK::MobilizedBody physicsBody);
 	void createCylinder(MdlParser::mdl_object object, SimTK::MobilizedBody physicsBody);
-	void enableContacts();
 	void printContactSurfaces();
 	void visualize();
 	void realize();

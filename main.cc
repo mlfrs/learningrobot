@@ -33,8 +33,8 @@ int main(int argc, char** argv)
 	// Run/Step the simulation.
 	physics->run();
 
-	delete physics;
-	delete objectManager;
+//	delete physics;
+//	delete objectManager;
 
 	return 0;
 }
