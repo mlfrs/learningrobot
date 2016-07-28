@@ -11,8 +11,19 @@
 #include <stdio.h>
 #include <iostream>
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
+
+	std::string model;
+
+	// Parse arguments.
+	if (argc==2) {
+		model = argv[1];
+	} else { 
+		model = "chain";
+	}
+	std::cout << "model " << model << std::endl;
+
 	// First class. Todo remove.
 	someclass *myclass = new someclass(argc);
 
@@ -24,7 +35,7 @@ int main(int argc, char** argv)
 
 	// Try to load the model.
 	try {
-		objectManager->addMdl("robot");
+		objectManager->addMdl(model);
 	} catch (const std::exception& e) {
 		std::cout << "Error in adding Model : " << e.what() << std::endl;
 		exit;
@@ -32,6 +43,7 @@ int main(int argc, char** argv)
 
 	// Run/Step the simulation.
 	physics->run();
+	objectManager->getObject(2);
 
 //	delete physics;
 //	delete objectManager;

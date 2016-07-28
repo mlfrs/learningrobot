@@ -13,13 +13,16 @@
 #include "../object_node.h"
 #include <iostream>
 
+#include "mlfrs_simbody.h"
+
 class Physics 
 {
 private:
+	PhysicsEngine* phyEng;
 
 public:
 	Physics(std::string engine);
-	PhysicsEngine* phyEng;
+	ObjectNode getObjectNode(ObjectNode objectNode);
 	void createObject(MdlParser::mdl_object M, ObjectNode O);
 	void run();
 	~Physics();

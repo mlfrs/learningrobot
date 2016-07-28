@@ -6,7 +6,7 @@
  * - All rights reserved.
  *
  * This class provides a common interface to creating objects.
- * In principle every object created has an object id (o_id). 
+ * In principle every object created has an object id (oId). 
  * physics instance (ie. rigidBody) !
  *
  * This class also contains a function for loading a mdl file
@@ -39,11 +39,6 @@ using namespace std;
 
 ObjectManager::ObjectManager(const Physics& physics) : physics(physics) {}
 
-int m_id = 0;
-int o_id = 0;
-int c_id = 0;
-int p_id = 0;
-
 MdlParser mdl;
 
 std::vector<typename Model::Model> models;
@@ -62,7 +57,6 @@ void ObjectManager::addMdl(string mdlfile) {
 	mdl.read(mdlfile, modelObject, joint, function, method);
 
 	if (!modelObject.empty()) {
-		int o_id;
 		for (int i = 0; i < modelObject.size(); i++) {
 /*
  *	//	 if we impliment a separate visualizer it, would be setup here. eg.
@@ -72,7 +66,12 @@ void ObjectManager::addMdl(string mdlfile) {
  *				gfxNode.createObject(object[i], N);
  *			}
  */
-			object.push_back(createObject(modelObject[i]));
+			ObjectNode object;
+			object.oId = oId;
+			object.modelobject = modelObject[i];
+			physics.createObject(modelObject[i], object);
+			objects.push_back(object);
+			oId++;
 		}
 
 		int oid_a,oid_b;
@@ -95,20 +94,8 @@ void ObjectManager::addMdl(string mdlfile) {
 
 }
 
-ObjectNode ObjectManager::createObject(MdlParser::mdl_object modelObject) {
-
-	ObjectNode object;
-	PhysicsEngine* phybody;
-
-	physics.createObject(modelObject, object);
-
-	object.o_id = o_id;
-	object.phybody = phybody;
-	object.modelobject = modelObject;
-
-	o_id++;
-	return object;
-
+void ObjectManager::getObject(int oid) {
+	physics.getObjectNode(objects.at(oid));
 }
 
 void ObjectManager::togglePhysicsVisibility(){

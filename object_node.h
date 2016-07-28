@@ -18,21 +18,19 @@
 
 #include <iostream>
 #include <Eigen/Dense>
-#include "physics/physics_engine.h"
 #include "model/mdl_parser.h"
 
 class ObjectNode {
 	private:
 	public:
 
-	int o_id;
+	int oId;
 	std::string name;
 	bool activation_state;
-	Eigen::Vector4f position;
-	Eigen::Matrix4f orientation;
-	PhysicsEngine* phybody;
+	Eigen::Vector3f position;
+	Eigen::Vector4f rotation; 
+//	Eigen::Matrix3f rotation;
 	MdlParser::mdl_object modelobject;
-
 };
 
 #endif

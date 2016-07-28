@@ -19,14 +19,18 @@ public:
 	ObjectManager(const Physics& physics);
 
 	void addMdl(std::string model);
-	ObjectNode createObject(MdlParser::mdl_object object);
 	void createJoint(MdlParser::mdl_joint joint,int oid_a, int oid_b);
 	void togglePhysicsVisibility();
+	void getObject(int oid);
 
 	~ObjectManager();
 
 private:
 	Physics physics;
+	int m_id = 0;
+	int oId = 0;
+	int c_id = 0;
+	int p_id = 0;
 };
 
 #endif

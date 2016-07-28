@@ -24,18 +24,24 @@ Physics::Physics(std::string engine) {
 	}
 }
 
+ObjectNode Physics::getObjectNode(ObjectNode objectNode) {
+	phyEng->getStatefulObjectNode(objectNode);
+}
+
 void Physics::createObject(MdlParser::mdl_object M, ObjectNode O) {
 	if (M.physics_shape == "box") {
-		phyEng->createBox(M, phyEng->getBody());
+		std::cout << "Physics::createObject box " << std::endl;
+		phyEng->createBox(M,O);
 	} else if (M.physics_shape == "sphere") {
-		phyEng->createSphere(M, phyEng->getBody());
+		std::cout << "Physics::createObject sphere " << std::endl;
+		phyEng->createSphere(M,O);
 	} else if (M.physics_shape == "cylinder") {
-		phyEng->createCylinder(M, phyEng->getBody());
+		std::cout << "Physics::createObject cylinder " << std::endl;
+		phyEng->createCylinder(M,O);
 	}
 }
 
 void Physics::run() {
-	phyEng->init();
 	phyEng->run();
 }
 

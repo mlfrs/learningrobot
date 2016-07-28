@@ -1,7 +1,6 @@
 {
 	"objects" : {
 		"head" : {
-			"name" : "head",
 			"graphics_mesh" : "head",
 			"physics_shape" : "sphere",
 			"mass" : "5.0",
@@ -10,7 +9,6 @@
 			"position" : [ "0.0", "20.5", "0.0" ]
 		},
 		"body" : {
-			"name" : "body",
 			"graphics_mesh" : "body",
 			"physics_shape" : "box",
 			"mass" : "40.0",
