@@ -16,12 +16,12 @@
 class ObjectManager {
 
 public:
-	ObjectManager(const Physics& physics);
+	ObjectManager(Physics& physics);
 
 	void addMdl(std::string model);
 	void createJoint(MdlParser::mdl_joint joint,int oid_a, int oid_b);
 	void togglePhysicsVisibility();
-	void getObject(int oid);
+	void getObject(int oid, bool update = true);
 
 	~ObjectManager();
 

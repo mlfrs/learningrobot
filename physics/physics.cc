@@ -25,7 +25,7 @@ Physics::Physics(std::string engine) {
 }
 
 ObjectNode Physics::getObjectNode(ObjectNode objectNode) {
-	phyEng->getStatefulObjectNode(objectNode);
+	return phyEng->getStatefulObjectNode(objectNode);
 }
 
 void Physics::createObject(MdlParser::mdl_object M, ObjectNode O) {
@@ -41,11 +41,24 @@ void Physics::createObject(MdlParser::mdl_object M, ObjectNode O) {
 	}
 }
 
+void Physics::createJoint(MdlParser::mdl_joint J, ObjectNode A, ObjectNode B) {
+	if (J.joint_type == "free") {
+		phyEng->createFreeJoint(J, A, B);
+	} else if (J.joint_type == "ball") {
+		phyEng->createBallJoint(J, A, B);
+	}
+}
+
+void Physics::init() {
+	phyEng->init();
+}
+
 void Physics::run() {
 	phyEng->run();
 }
 
 Physics::~Physics() {
-//	delete phyEng;
+	std::cout << " Physics::~Physics() " << std::endl; 
+	delete phyEng;
 }
 

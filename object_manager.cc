@@ -37,19 +37,19 @@
 
 using namespace std;
 
-ObjectManager::ObjectManager(const Physics& physics) : physics(physics) {}
+ObjectManager::ObjectManager(Physics& physics) : physics(physics) {}
 
-MdlParser mdl;
-
-std::vector<typename Model::Model> models;
-std::vector<typename ObjectNode::ObjectNode> objects;
+static Physics physics("simbody");
+//static std::vector<typename Model::Model> models;
+static std::vector<typename ObjectNode::ObjectNode> objects;
 
 void ObjectManager::addMdl(string mdlfile) {
 
 	Model model;
+	MdlParser mdl;
 
 	// only modelObjects and joints are used so far.
-	vector<ObjectNode> object;
+//	vector<ObjectNode> object;
 	vector<MdlParser::mdl_object> modelObject;
 	vector<MdlParser::mdl_joint> joint;
 	vector<MdlParser::mdl_function> function;
@@ -74,33 +74,54 @@ void ObjectManager::addMdl(string mdlfile) {
 			oId++;
 		}
 
-		int oid_a,oid_b;
+		int oid_a, oid_b;
+		ObjectNode objectNodeA, objectNodeB;
 		// loop through all joints and find the objects they correspond to.
 		for (int j = 0; j < joint.size(); j++) {
 			for (int i = 0; i < modelObject.size(); i++) {
 				if ( modelObject[i].name.compare(joint[j].primary_object) == 0 ) {
-					oid_a=i;
+//					oid_a=i;
+					objectNodeA = objects.at(objects.size()-modelObject.size()+i);
 				} else if ( modelObject[i].name.compare(joint[j].secondary_object) == 0 ) {
-					oid_b=i;
+//					oid_b=i;
+					objectNodeB = objects.at(objects.size()-modelObject.size()+i);
 				}
 			}
-//			createJoint(joint[j],modelObject.size()-oid_a, modelObject.size()-oid_b);
+//			physics.createJoint(joint[j],modelObject.size()-oid_a, modelObject.size()-oid_b);
+			physics.createJoint(joint[j], objectNodeA, objectNodeB);
 		}
 	}
-	model.objects = object;
-	model.model_id = m_id;
-	models.push_back(model);
-	m_id++;
+//	model.model_id = m_id;
+//	models.push_back(model);
+//	m_id++;
 
 }
 
-void ObjectManager::getObject(int oid) {
-	physics.getObjectNode(objects.at(oid));
+void ObjectManager::getObject(int oid, bool update) {
+	if (update) {
+		objects.at(oid) = physics.getObjectNode(objects.at(oid));
+	} else {
+		physics.getObjectNode(objects.at(oid));
+	}
+	std::cout << " - Object Position " << std::endl;
+	std::cout << objects.at(oid).position << std::endl;
+	std::cout << " - Object Rotation " << std::endl;
+	std::cout << objects.at(oid).rotation << std::endl;
+	std::cout << " - Object Linear Velocity" << std::endl;
+	std::cout << objects.at(oid).linear_velocity << std::endl;
+	std::cout << " - Object Linear Acceleration" << std::endl;
+	std::cout << objects.at(oid).linear_acceleration << std::endl;
+	std::cout << " - Object Angular Velocity " << std::endl;
+	std::cout << objects.at(oid).angular_velocity << std::endl;
+	std::cout << " - Object Angular Acceleration " << std::endl;
+	std::cout << objects.at(oid).angular_acceleration << std::endl;
 }
 
 void ObjectManager::togglePhysicsVisibility(){
 //	gfxNode.togglePhysicsVisibility();
 }
 
-ObjectManager::~ObjectManager() {}
+ObjectManager::~ObjectManager() {
+	std::cout << " ObjectManager::~ObjectManager " << std::endl; 
+}
 

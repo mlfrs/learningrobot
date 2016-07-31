@@ -21,6 +21,8 @@ static SimTK::State state;
 const float TRANSITION_VELOCITY = 1e-3;
 const float GRAVITY = -9.81;
 const float FRAME_RATE = 30;
+float INTERVAL = 0;
+const float STEP_SIZE = 0.01;
 const bool TRACK_DISSIPATED_ENERGY = true;
 const Rotation rXdown(-Pi/2,ZAxis);
 const Rotation rYdown(-Pi,ZAxis);
@@ -45,7 +47,8 @@ MlfrsSimbody::MlfrsSimbody() :	matter(simbody_sys),
 								// RungeKuttaMersonIntegrator integ(simbody_sys);
 								// RungeKutta3Integrator integ(simbody_sys);
 								// VerletIntegrator integ(simbody_sys);
-								integ(simbody_sys,CPodes::BDF,CPodes::Newton)
+								integ(simbody_sys,CPodes::BDF,CPodes::Newton),
+								timestep(simbody_sys, integ)
 								{}
 
 // const System::Guts &ggg = simbody_sys.getSystemGuts();
@@ -63,12 +66,9 @@ void MlfrsSimbody::createBox(MdlParser::mdl_object object, ObjectNode objectNode
 					Vec3(object.dimension[0], object.dimension[1], object.dimension[2])),
 				material)
 		);
-			//.joinClique(defaultClique));
-		SimTK::MobilizedBody::Free physicsBody(matter.Ground(), Transform(Vec3(0)),
-			bodyInfo, Transform( rYdown, 
-			Vec3(object.position[0], object.position[1], object.position[2])));
-		simbodyObject sbo = { physicsBody, "free", objectNode.oId };
-	 	simbodyObjects.push_back(sbo);
+		rigidBody rbo = { bodyInfo, objectNode.oId };
+	 	rigidBodies.push_back(rbo);
+		//.joinClique(defaultClique));
 	} catch (const std::exception& e) {
 		std::cout << "Error in createBox() : " << e.what() << std::endl;
 		exit;
@@ -85,12 +85,9 @@ void MlfrsSimbody::createSphere(MdlParser::mdl_object object, ObjectNode objectN
 		bodyInfo.addContactSurface(Transform(),
 				ContactSurface(ContactGeometry::Sphere(object.dimension[0]), material)
 		);
-			//.joinClique(defaultClique));
-		SimTK::MobilizedBody::Free physicsBody(matter.Ground(), Transform(Vec3(0)),
-			bodyInfo, Transform( rYdown,
-				Vec3(object.position[0], object.position[1], object.position[2])));
-		simbodyObject sbo = { physicsBody, "free", objectNode.oId };
-	 	simbodyObjects.push_back(sbo);
+		rigidBody rbo = { bodyInfo, objectNode.oId };
+	 	rigidBodies.push_back(rbo);
+		//.joinClique(defaultClique));
 	} catch (const std::exception& e) {
 		std::cout << "Error in createSphere() : " << e.what() << std::endl;
 		exit;
@@ -110,12 +107,9 @@ void MlfrsSimbody::createCylinder(MdlParser::mdl_object object, ObjectNode objec
 			ContactSurface(ContactGeometry::Brick(Vec3(
 				object.dimension[0], object.dimension[1], object.dimension[2])), material)
 		);
-			//.joinClique(defaultClique));
-		SimTK::MobilizedBody::Free physicsBody(matter.Ground(), Transform(Vec3(0)),
-			bodyInfo, Transform( rYdown, 
-			Vec3(object.position[0],object.position[1],object.position[2])));
-		simbodyObject sbo = { physicsBody, "free", objectNode.oId };
-	 	simbodyObjects.push_back(sbo);
+		//.joinClique(defaultClique));
+		rigidBody rbo = { bodyInfo, objectNode.oId };
+	 	rigidBodies.push_back(rbo);
 	} catch (const std::exception& e) {
 		std::cout << "Error in createCylinder() : " << e.what() << std::endl;
 		exit;
@@ -123,12 +117,62 @@ void MlfrsSimbody::createCylinder(MdlParser::mdl_object object, ObjectNode objec
 }
 
 /*
- * Takes an objectNode and returns an ObjectNode with the current state.
+ * We need other types of contraints but this is the general idea.
+ * For this use case just say a free joint is always connected with ground
+ */
+void MlfrsSimbody::createFreeJoint(MdlParser::mdl_joint joint, ObjectNode objectNodeA, ObjectNode objectNodeB) {
+	Body::Rigid rigidBodyA, rigidBodyB;
+	for(std::vector<rigidBody>::iterator it = rigidBodies.begin();
+		it != rigidBodies.end(); ++it) {
+		if ((*it).id == objectNodeA.oId) {
+			rigidBodyA = (*it).rBody;
+		}
+		if ((*it).id == objectNodeB.oId) {
+			rigidBodyB = (*it).rBody;
+		}
+	}
+	SimTK::MobilizedBody::Free physicsBody(matter.Ground(), Transform(Vec3(0)),
+		rigidBodyA, Transform( rYdown, 
+		Vec3(joint.primary_position[0],joint.primary_position[1],joint.primary_position[2])));
+	simbodyObject sbo = { physicsBody, "free", objectNodeA.oId, 0 };
+ 	simbodyObjects.push_back(sbo);
+}
+
+/*
+ * For a simbody joint and an object node.
+ * The primary object (A) is the SimTK::MobilizedBody
+ * The secondard object (B) is the Body::Rigid
+ */
+void MlfrsSimbody::createBallJoint(MdlParser::mdl_joint joint, ObjectNode objectNodeA, ObjectNode objectNodeB) {
+	SimTK::MobilizedBody mobilizedBody;
+	for(std::vector<simbodyObject>::iterator it = simbodyObjects.begin();
+		it != simbodyObjects.end(); ++it) {
+		if ((*it).rigidBodyAid == objectNodeA.oId) {
+			mobilizedBody = (*it).mBody;
+		}
+	}
+	Body::Rigid bodyInfo;
+	for(std::vector<rigidBody>::iterator it = rigidBodies.begin();
+		it != rigidBodies.end(); ++it) {
+		if ((*it).id == objectNodeB.oId) {
+			bodyInfo = (*it).rBody;
+		}
+	}
+	SimTK::MobilizedBody::Ball physicsBody(mobilizedBody, Transform(
+		Vec3(joint.primary_position[0],joint.primary_position[1],joint.primary_position[2])),
+		bodyInfo, Transform( rYdown, 
+		Vec3(joint.primary_position[0],joint.primary_position[1],joint.primary_position[2])));
+	simbodyObject sbo = { physicsBody, "free", objectNodeB.oId, 0 };
+ 	simbodyObjects.push_back(sbo);
+}
+
+/*
+ * Takes an objectNode and returns a copy if it with the current state.
  */
 ObjectNode MlfrsSimbody::getStatefulObjectNode(ObjectNode node) {
 	for(std::vector<simbodyObject>::iterator it = simbodyObjects.begin();
 		it != simbodyObjects.end(); ++it) {
-		if ((*it).id == node.oId) {
+		if ((*it).rigidBodyAid == node.oId) {
 			return buildObjectNode(node, (*it).mBody);
 		}
 	}
@@ -136,6 +180,7 @@ ObjectNode MlfrsSimbody::getStatefulObjectNode(ObjectNode node) {
 		"' with id " << node.oId << "not found" << std::endl;
 	return ObjectNode();
 }
+
 
 /*
  * Function to return an object node with the current state.
@@ -147,18 +192,25 @@ ObjectNode MlfrsSimbody::buildObjectNode(ObjectNode O, SimTK::MobilizedBody mBod
 
 	// Get the state
 	const SimTK::State &state_ = integ.getAdvancedState();
-//	const SimTK::State &state_ = getAssembler().getInternalState();
+	// const SimTK::State &state_ = getAssembler().getInternalState();
 
 	const Vec3 P = mBody.getBodyOriginLocation(state_);
 	const Rotation R = mBody.getBodyRotation(state_);
-	const Vec4 RA = R.convertRotationToAngleAxis();
-	std::cout << R.convertRotationToAngleAxis() << std::endl;
+	const Vec3 LV = mBody.getBodyOriginVelocity(state_);
+	const Vec3 AV = mBody.getBodyAngularVelocity(state_);
+	const Vec3 LA = mBody.getBodyOriginAcceleration(state_);
+	const Vec3 AA = mBody.getBodyAngularAcceleration(state_);
+	const Vec4 AR = R.convertRotationToAngleAxis();
 
 	O.position=Eigen::Vector3f(P[0],P[1],P[2]);
-	O.rotation=Eigen::Vector4f(RA[0],RA[1],RA[2],RA[3]);
+	O.rotation=Eigen::Vector4f(AR[0],AR[1],AR[2],AR[3]);
+	O.linear_velocity=Eigen::Vector3f(LV[0],LV[1],LV[2]);
+	O.angular_velocity=Eigen::Vector3f(AV[0],AV[1],AV[2]);
+	O.linear_acceleration=Eigen::Vector3f(LA[0],LA[1],LA[2]);
+	O.angular_acceleration=Eigen::Vector3f(AA[0],AA[1],AA[2]);
 
-	std::cout << " Eigen::Vector4f - " << O.position << std::endl;
-	std::cout << " Eigen::Vector4f - " << O.rotation << std::endl;
+	// std::cout << " Eigen::Vector4f - " << O.position << std::endl;
+	// std::cout << " Eigen::Vector4f - " << O.rotation << std::endl;
 
 	/*
 	Mat33 A = R.toMat33();
@@ -168,21 +220,22 @@ ObjectNode MlfrsSimbody::buildObjectNode(ObjectNode O, SimTK::MobilizedBody mBod
 		std::cout << A[i][2] << std::endl;
 	}
 	*/
+
 	//	double *t = arr;
 	//	Eigen::Matrix3d eigen_ = Eigen::MapType<Eigen::Matrix3d>( arr, 3, 3 );
 
 	return O;
 }
 
-void MlfrsSimbody::init() {
+void MlfrsSimbody::setup() {
 	// setup contact
 	contact.setTrackDissipatedEnergy(TRACK_DISSIPATED_ENERGY);
     contact.setTransitionVelocity(TRANSITION_VELOCITY);
 	// setup the ground
 	matter.Ground().updBody().addContactSurface(
 		Transform(rXdown, Vec3(0)),
-		ContactSurface(ContactGeometry::HalfSpace(), material)
-	.joinClique(ContactSurface::createNewContactClique()));
+		ContactSurface(ContactGeometry::HalfSpace(), material));
+	// .joinClique(ContactSurface::createNewContactClique()));
 }
 
 void MlfrsSimbody::printContactSurfaces() {
@@ -191,7 +244,7 @@ void MlfrsSimbody::printContactSurfaces() {
 		const int nsurfs = mBody.getBody().getNumContactSurfaces();
 		std::cout << "Movable body " << (int)mbx << " has " << nsurfs << " contact surfaces" << std::endl;
 		for (int i=0; i<nsurfs; ++i) {
-//			std::cout << " " << i << " - index : " << (int)tracker.getContactSurfaceIndex(mbx,i) << std::endl;
+		// std::cout << " " << i << " - index : " << (int)tracker.getContactSurfaceIndex(mbx,i) << std::endl;
 		}
 	}
 }
@@ -220,17 +273,18 @@ void MlfrsSimbody::realize() {
 		exit;
 	}
 }
+
 /*
- * Run the simbody simulation.
+ * initialize the simbody simulation.
  */
-void MlfrsSimbody::run() {
+void MlfrsSimbody::init() {
 	try {
 		/*
 		 * Initialize, visualize and realize the simulation.
 		 * Simbody requires this sequence(integrator/state) 
 		 * before we can query the simulation.
 		 */
-		init();
+		setup();
 		visualize();
 		realize();
 
@@ -238,7 +292,7 @@ void MlfrsSimbody::run() {
 		for(std::vector<simbodyObject>::iterator it = simbodyObjects.begin(); it != simbodyObjects.end(); ++it) {
 			if ((*it).type == "pin") {
 				MobilizedBody::Pin m = MobilizedBody::Pin::downcast((*it).mBody);
-				m.setRate(state, 5.0);
+				m.setRate(state, 10.0);
 			}
 		}
 
@@ -247,16 +301,22 @@ void MlfrsSimbody::run() {
 		integ.setAccuracy(1e-3); // minimum for CPodes
 		state = simbody_sys.getDefaultState();
 
-	    TimeStepper ts(simbody_sys, integ);
-	    ts.initialize(state);
-		ts.stepTo(5.0);
-
-		return;
+		// TimeStepper ts(simbody_sys, integ);
+	    timestep.initialize(state);
 
 	} catch  (const std::exception& e) {
 		exit;
 	}
 }
 
-MlfrsSimbody::~MlfrsSimbody() {}
+/*
+ * Step the simulation.
+ */
+void MlfrsSimbody::run() {
+	timestep.stepTo(INTERVAL+=STEP_SIZE);
+}
+
+MlfrsSimbody::~MlfrsSimbody() {
+	std::cout << " MlfrsSimbody::~MlfrsSimbody() " << std::endl; 
+}
 

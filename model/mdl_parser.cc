@@ -49,7 +49,9 @@ void MdlParser::read(string model,
 		}
 
 		// Objects
-		// - Assign components from root.
+		//
+		// - Assign objects from root.
+		//
 		Json::Value objects = root["objects"];
 		Json::Value::Members objectNames = root["objects"].getMemberNames();
 

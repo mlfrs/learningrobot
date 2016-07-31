@@ -19,6 +19,8 @@ public:
 	virtual void init(){}
 	virtual ObjectNode getStatefulObjectNode(ObjectNode O){}
 	virtual ObjectNode buildObjectNode(ObjectNode O, SimTK::MobilizedBody mBody){}
+	virtual void createBallJoint(MdlParser::mdl_joint J, ObjectNode A, ObjectNode B){}
+	virtual void createFreeJoint(MdlParser::mdl_joint J, ObjectNode A, ObjectNode B){}
 	virtual ~PhysicsEngine(){};
 private:
 };

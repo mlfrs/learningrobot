@@ -11,8 +11,7 @@
 #include <stdio.h>
 #include <iostream>
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 
 	std::string model;
 
@@ -41,12 +40,24 @@ int main(int argc, char* argv[])
 		exit;
 	}
 
-	// Run/Step the simulation.
-	physics->run();
-	objectManager->getObject(2);
+	// Initialize the simulation.
+	physics->init();
 
-//	delete physics;
-//	delete objectManager;
+	// Main loop.
+	while( 1 ) {
+		physics->run();
+		/*
+		 * Here we can add other functions that can interface
+		 * With the simulation, in this case getObject requests
+		 * the physics engine to get the updated object state 
+		 * and print out the position and rotation.
+		 */
+		objectManager->getObject(1);
+		objectManager->getObject(2);
+	}
+
+	delete physics;
+	delete objectManager;
 
 	return 0;
 }

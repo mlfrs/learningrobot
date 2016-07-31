@@ -24,6 +24,8 @@ public:
 	Physics(std::string engine);
 	ObjectNode getObjectNode(ObjectNode objectNode);
 	void createObject(MdlParser::mdl_object M, ObjectNode O);
+	void createJoint(MdlParser::mdl_joint J, ObjectNode A, ObjectNode B);
+	void init();
 	void run();
 	~Physics();
 

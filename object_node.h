@@ -30,6 +30,10 @@ class ObjectNode {
 	Eigen::Vector3f position;
 	Eigen::Vector4f rotation; 
 //	Eigen::Matrix3f rotation;
+	Eigen::Vector3f linear_velocity;
+	Eigen::Vector3f linear_acceleration;
+	Eigen::Vector3f angular_velocity;
+	Eigen::Vector3f angular_acceleration;
 	MdlParser::mdl_object modelobject;
 };
 

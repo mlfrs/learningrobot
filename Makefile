@@ -14,7 +14,7 @@ LOCALINC = /usr/local/include/
 COMPOPTS = -O0 -c -g -std=c++11
 LINKOPTS = -O0 -g -lstdc++ -lm -std=c++11
 COMPILER = g++ -m64 -o $(BUILDDIR)$@
-BUILDDIR = 'build/'
+BUILDDIR = build/
 
 # 
 # pkg-config flags

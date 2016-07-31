@@ -25,17 +25,27 @@ private:
 	SimTK::Force::UniformGravity gravity;
 	// SimTK::Integrator integ;
 	SimTK::CPodesIntegrator integ;
+	SimTK::TimeStepper timestep;
 
 	struct simbodyObject {
 		SimTK::MobilizedBody mBody;
 		std::string type;
-		int id;
+		int rigidBodyAid;
+		int rigidBodyBid;
 	};
 	std::vector<simbodyObject> simbodyObjects;
 
+	struct rigidBody {
+		SimTK::Body::Rigid rBody;
+		int id;
+	};
+	std::vector<rigidBody> rigidBodies;
+
 	void visualize();
 	void realize();
+	void setup();
 	void init();
+	void ruu();
 
 public:
 	MlfrsSimbody();
@@ -46,6 +56,9 @@ public:
 	void createCylinder(MdlParser::mdl_object object, ObjectNode objectNode);
 	ObjectNode getStatefulObjectNode(ObjectNode objectNode);
 	ObjectNode buildObjectNode(ObjectNode objectNode, SimTK::MobilizedBody mBody);
+	void createJoint(MdlParser::mdl_joint joint, ObjectNode objectNodeA, ObjectNode objectNodeB);
+	void createFreeJoint(MdlParser::mdl_joint joint, ObjectNode objectNodeA, ObjectNode objectNodeB);
+	void createBallJoint(MdlParser::mdl_joint joint, ObjectNode objectNodeA, ObjectNode objectNodeB);
 	void printContactSurfaces();
 	void run();
 

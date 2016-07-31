@@ -1,0 +1,88 @@
+{
+	"objects" : {
+		"bodyA" : {
+			"graphics_mesh" : "head",
+			"physics_shape" : "sphere",
+			"mass" : "5.0",
+			"dimension" : [ "1.0" ],
+			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"position" : [ "0.0", "5.0", "1.0" ]
+		},
+		"bodyB" : {
+			"graphics_mesh" : "head",
+			"physics_shape" : "sphere",
+			"mass" : "5.0",
+			"dimension" : [ "1.0" ],
+			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"position" : [ "0.0", "10.0", "1.0" ]
+		},
+		"bodyC" : {
+			"graphics_mesh" : "head",
+			"physics_shape" : "sphere",
+			"mass" : "5.0",
+			"dimension" : [ "1.0" ],
+			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"position" : [ "1.0", "15.0", "0.0" ]
+		},
+		"bodyD" : {
+			"graphics_mesh" : "head",
+			"physics_shape" : "sphere",
+			"mass" : "5.0",
+			"dimension" : [ "1.0" ],
+			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"position" : [ "0.0", "20.0", "0.0" ]
+		},
+		"bodyE" : {
+			"graphics_mesh" : "head",
+			"physics_shape" : "sphere",
+			"mass" : "5.0",
+			"dimension" : [ "1.0" ],
+			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"position" : [ "0.0", "25.0", "0.0" ]
+		}
+	},
+	"joints" : {
+		"contraintA" : {
+			"joint_type" : "free",
+			"primary_object" : "bodyA",
+			"primary_axis" : [ "1.0", "1.0", "1.0" ],
+			"primary_position" : [ "0.0", "5.0", "1.0" ]
+		},
+		"contraintB" : {
+			"joint_type" : "ball",
+			"primary_object" : "bodyA",
+			"secondary_object" : "bodyB",
+			"primary_axis" : [ "1.0", "1.0", "1.0" ],
+			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
+			"primary_position" : [ "0.0", "7.5", "1.0" ],
+			"secondary_position" : [ "0.0", "7.5", "1.0" ]
+		},
+		"contraintC" : {
+			"joint_type" : "ball",
+			"primary_object" : "bodyB",
+			"secondary_object" : "bodyC",
+			"primary_axis" : [ "1.0", "1.0", "1.0" ],
+			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
+			"primary_position" : [ "1.0", "12.5", "0.0" ],
+			"secondary_position" : [ "1.0", "12.5", "0.0" ]
+		},
+		"contraintD" : {
+			"joint_type" : "ball",
+			"primary_object" : "bodyC",
+			"secondary_object" : "bodyD",
+			"primary_axis" : [ "1.0", "1.0", "1.0" ],
+			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
+			"primary_position" : [ "0.0", "17.5", "0.0" ],
+			"secondary_position" : [ "0.0", "17.5", "0.0" ]
+		},
+		"contraintE" : {
+			"joint_type" : "ball",
+			"primary_object" : "bodyD",
+			"secondary_object" : "bodyE",
+			"primary_axis" : [ "1.0", "1.0", "1.0" ],
+			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
+			"primary_position" : [ "0.0", "22.5", "0.0" ],
+			"secondary_position" : [ "0.0", "22.5", "0.0" ]
+		}
+	}
+}
