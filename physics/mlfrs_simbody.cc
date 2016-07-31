@@ -161,7 +161,7 @@ void MlfrsSimbody::createBallJoint(MdlParser::mdl_joint joint, ObjectNode object
 	SimTK::MobilizedBody::Ball physicsBody(mobilizedBody, Transform(
 		Vec3(joint.primary_position[0],joint.primary_position[1],joint.primary_position[2])),
 		bodyInfo, Transform( rYdown, 
-		Vec3(joint.primary_position[0],joint.primary_position[1],joint.primary_position[2])));
+		Vec3(joint.secondary_position[0],joint.secondary_position[1],joint.secondary_position[2])));
 	simbodyObject sbo = { physicsBody, "free", objectNodeB.oId, 0 };
  	simbodyObjects.push_back(sbo);
 }
