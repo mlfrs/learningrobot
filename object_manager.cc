@@ -67,6 +67,7 @@ void ObjectManager::addMdl(string mdlfile) {
  *			}
  */
 			ObjectNode object;
+			object.name = modelObject[i].name;
 			object.oId = oId;
 			object.modelobject = modelObject[i];
 			physics.createObject(modelObject[i], object);
@@ -80,14 +81,11 @@ void ObjectManager::addMdl(string mdlfile) {
 		for (int j = 0; j < joint.size(); j++) {
 			for (int i = 0; i < modelObject.size(); i++) {
 				if ( modelObject[i].name.compare(joint[j].primary_object) == 0 ) {
-//					oid_a=i;
 					objectNodeA = objects.at(objects.size()-modelObject.size()+i);
 				} else if ( modelObject[i].name.compare(joint[j].secondary_object) == 0 ) {
-//					oid_b=i;
 					objectNodeB = objects.at(objects.size()-modelObject.size()+i);
 				}
 			}
-//			physics.createJoint(joint[j],modelObject.size()-oid_a, modelObject.size()-oid_b);
 			physics.createJoint(joint[j], objectNodeA, objectNodeB);
 		}
 	}
@@ -103,6 +101,7 @@ void ObjectManager::getObject(int oid, bool update) {
 	} else {
 		physics.getObjectNode(objects.at(oid));
 	}
+	/*
 	std::cout << " - Object Position " << std::endl;
 	std::cout << objects.at(oid).position << std::endl;
 	std::cout << " - Object Rotation " << std::endl;
@@ -115,6 +114,7 @@ void ObjectManager::getObject(int oid, bool update) {
 	std::cout << objects.at(oid).angular_velocity << std::endl;
 	std::cout << " - Object Angular Acceleration " << std::endl;
 	std::cout << objects.at(oid).angular_acceleration << std::endl;
+	*/
 }
 
 void ObjectManager::togglePhysicsVisibility(){

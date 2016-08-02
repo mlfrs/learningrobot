@@ -97,8 +97,9 @@ void MlfrsSimbody::createSphere(MdlParser::mdl_object object, ObjectNode objectN
 void MlfrsSimbody::createCylinder(MdlParser::mdl_object object, ObjectNode objectNode) {
 	std::cout << "MlfrsSimbody::createCylinder - object : " << objectNode.oId << std::endl;
 	try {
-	    Body::Rigid bodyInfo(MassProperties(object.mass, Vec3(0), object.mass * UnitInertia::brick(
-			Vec3(object.dimension[0],object.dimension[1],object.dimension[2]))));
+	    Body::Rigid bodyInfo(MassProperties( object.mass, Vec3(0),
+			object.mass * UnitInertia::brick(
+				Vec3(object.dimension[0],object.dimension[1],object.dimension[2]))));
 		bodyInfo.addDecoration(Transform(), DecorativeCylinder(
 			object.dimension[0], object.dimension[1]).setOpacity(0.4));
 		// looks like they don't have a proper cylinder contact body..
@@ -131,9 +132,15 @@ void MlfrsSimbody::createFreeJoint(MdlParser::mdl_joint joint, ObjectNode object
 			rigidBodyB = (*it).rBody;
 		}
 	}
-	SimTK::MobilizedBody::Free physicsBody(matter.Ground(), Transform(Vec3(0)),
+	SimTK::MobilizedBody::Free physicsBody(matter.Ground(), Transform( 
+		Vec3(0)),
 		rigidBodyA, Transform( rYdown, 
-		Vec3(joint.primary_position[0],joint.primary_position[1],joint.primary_position[2])));
+		Vec3(joint.primary_position[0],
+			 joint.primary_position[1],
+			 joint.primary_position[2])));
+//		Vec3(objectNodeA.modelobject.position[0], 
+//			 objectNodeA.modelobject.position[1], 
+//			 objectNodeA.modelobject.position[2])));
 	simbodyObject sbo = { physicsBody, "free", objectNodeA.oId, 0 };
  	simbodyObjects.push_back(sbo);
 }
@@ -149,6 +156,7 @@ void MlfrsSimbody::createBallJoint(MdlParser::mdl_joint joint, ObjectNode object
 		it != simbodyObjects.end(); ++it) {
 		if ((*it).rigidBodyAid == objectNodeA.oId) {
 			mobilizedBody = (*it).mBody;
+			std::cout << "objectNodeA.oId " << objectNodeA.oId << std::endl;
 		}
 	}
 	Body::Rigid bodyInfo;
@@ -156,13 +164,18 @@ void MlfrsSimbody::createBallJoint(MdlParser::mdl_joint joint, ObjectNode object
 		it != rigidBodies.end(); ++it) {
 		if ((*it).id == objectNodeB.oId) {
 			bodyInfo = (*it).rBody;
+			std::cout << "objectNodeB.oId " << objectNodeB.oId << std::endl;
 		}
 	}
 	SimTK::MobilizedBody::Ball physicsBody(mobilizedBody, Transform(
-		Vec3(joint.primary_position[0],joint.primary_position[1],joint.primary_position[2])),
+		Vec3(joint.primary_position[0], 
+		joint.primary_position[1],
+		joint.primary_position[2])),
 		bodyInfo, Transform( rYdown, 
-		Vec3(joint.secondary_position[0],joint.secondary_position[1],joint.secondary_position[2])));
-	simbodyObject sbo = { physicsBody, "free", objectNodeB.oId, 0 };
+		Vec3(joint.secondary_position[0],
+			 joint.secondary_position[1],
+			 joint.secondary_position[2])));
+	simbodyObject sbo = { physicsBody, "ball", objectNodeB.oId, 0 };
  	simbodyObjects.push_back(sbo);
 }
 

@@ -6,7 +6,7 @@
 			"mass" : "5.0",
 			"dimension" : [ "1.0" ],
 			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
-			"position" : [ "0.0", "5.0", "1.0" ]
+			"position" : [ "0.0", "5.0", "0.0" ]
 		},
 		"bodyB" : {
 			"graphics_mesh" : "head",
@@ -22,7 +22,7 @@
 			"mass" : "5.0",
 			"dimension" : [ "1.0" ],
 			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
-			"position" : [ "1.0", "15.0", "0.0" ]
+			"position" : [ "0.0", "15.0", "0.0" ]
 		},
 		"bodyD" : {
 			"graphics_mesh" : "head",
@@ -46,7 +46,7 @@
 			"joint_type" : "free",
 			"primary_object" : "bodyA",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "5.0", "1.0" ]
+			"primary_position" : [ "0.0", "0.0", "0.0" ]
 		},
 		"contraintB" : {
 			"joint_type" : "ball",
@@ -54,8 +54,8 @@
 			"secondary_object" : "bodyB",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "0.0", "0.0" ],
-			"secondary_position" : [ "0.0", "5.0", "1.0" ]
+			"primary_position" : [ "2.0", "2.0", "2.0" ],
+			"secondary_position" : [ "0.0", "0.0", "0.0" ]
 		},
 		"contraintC" : {
 			"joint_type" : "ball",
@@ -63,8 +63,8 @@
 			"secondary_object" : "bodyC",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "0.0", "0.0" ],
-			"secondary_position" : [ "1.0", "5.0", "0.0" ]
+			"primary_position" : [ "2.0", "2.0", "2.0" ],
+			"secondary_position" : [ "0.0", "0.0", "0.0" ]
 		},
 		"contraintD" : {
 			"joint_type" : "ball",
@@ -72,8 +72,8 @@
 			"secondary_object" : "bodyD",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "0.0", "0.0" ],
-			"secondary_position" : [ "0.0", "5.0", "0.0" ]
+			"primary_position" : [ "2.0", "2.0", "2.0" ],
+			"secondary_position" : [ "0.0", "0.0", "0.0" ]
 		},
 		"contraintE" : {
 			"joint_type" : "ball",
@@ -81,8 +81,8 @@
 			"secondary_object" : "bodyE",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "0.0", "0.0" ],
-			"secondary_position" : [ "0.0", "5.0", "0.0" ]
+			"primary_position" : [ "2.0", "2.0", "2.0" ],
+			"secondary_position" : [ "0.0", "0.0", "0.0" ]
 		}
 	}
 }

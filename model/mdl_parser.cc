@@ -98,14 +98,12 @@ void MdlParser::read(string model,
 			for ( int i = 0; i < s_diffuse.size(); i++ ) {
 				float temp = ::atof(s_diffuse[i].asString().c_str());
 				object.diffuse[i] = temp;
-				cout << "diffuse test ' " << object.diffuse[i] << endl;
 			}
 
 			const Json::Value s_specular = objects[objectNames[o]]["specular"];
 			for ( int i = 0; i < s_specular.size(); i++ ) {
 				float temp = ::atof(s_specular[i].asString().c_str());
 				object.specular[i] = temp;
-				cout << "specular ' " << object.specular[i] << endl;
 			}
 
 			// read object components, these form physical compound objects.
