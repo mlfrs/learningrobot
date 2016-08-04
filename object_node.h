@@ -27,9 +27,10 @@ class ObjectNode {
 	int oId;
 	std::string name;
 	bool activation_state;
+	float mass;
+	Eigen::Vector3f dimensions;
 	Eigen::Vector3f position;
 	Eigen::Vector4f rotation; 
-//	Eigen::Matrix3f rotation;
 	Eigen::Vector3f linear_velocity;
 	Eigen::Vector3f linear_acceleration;
 	Eigen::Vector3f angular_velocity;

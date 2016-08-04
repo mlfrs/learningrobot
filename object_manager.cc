@@ -59,7 +59,7 @@ void ObjectManager::addMdl(string mdlfile) {
 	if (!modelObject.empty()) {
 		for (int i = 0; i < modelObject.size(); i++) {
 /*
- *	//	 if we impliment a separate visualizer it, would be setup here. eg.
+ *	if we impliment a separate visualizer it, would be setup here. eg.
  *		    if ( object[i].component.size() > 1 ) {
  *				gfxNode.createCompoundObjectNode(object[i], N);
  *			} else {
@@ -67,8 +67,12 @@ void ObjectManager::addMdl(string mdlfile) {
  *			}
  */
 			ObjectNode object;
-			object.name = modelObject[i].name;
 			object.oId = oId;
+			object.name = modelObject[i].name;
+			object.mass = modelObject[i].mass;
+			object.dimensions = Eigen::Vector3f(modelObject[i].dimension);
+			object.position = Eigen::Vector3f(modelObject[i].position);
+			object.rotation = Eigen::Vector4f(modelObject[i].rotation);
 			object.modelobject = modelObject[i];
 			physics.createObject(modelObject[i], object);
 			objects.push_back(object);
@@ -89,10 +93,9 @@ void ObjectManager::addMdl(string mdlfile) {
 			physics.createJoint(joint[j], objectNodeA, objectNodeB);
 		}
 	}
-//	model.model_id = m_id;
-//	models.push_back(model);
-//	m_id++;
-
+	//	model.model_id = m_id;
+	//	models.push_back(model);
+	//	m_id++;
 }
 
 void ObjectManager::getObject(int oid, bool update) {

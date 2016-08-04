@@ -56,14 +56,14 @@ MlfrsSimbody::MlfrsSimbody() :	matter(simbody_sys),
 void MlfrsSimbody::createBox(MdlParser::mdl_object object, ObjectNode objectNode) {
 	std::cout << "MlfrsSimbody::createBox - object : " << objectNode.oId << std::endl;
 	try {
-	    Body::Rigid bodyInfo(MassProperties(object.mass, Vec3(0), object.mass * UnitInertia::brick(
-			Vec3(object.dimension[0],object.dimension[1],object.dimension[2]))));
+	    Body::Rigid bodyInfo(MassProperties(objectNode.mass, Vec3(0), objectNode.mass * UnitInertia::brick(
+			Vec3(objectNode.dimensions[0],objectNode.dimensions[1],objectNode.dimensions[2]))));
 		bodyInfo.addDecoration(Transform(), DecorativeBrick(
-				Vec3(object.dimension[0], object.dimension[1], object.dimension[2]))
+				Vec3(objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2]))
 			.setOpacity(0.4));
 		bodyInfo.addContactSurface(Transform(),
 				ContactSurface(ContactGeometry::Brick(
-					Vec3(object.dimension[0], object.dimension[1], object.dimension[2])),
+					Vec3(objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2])),
 				material)
 		);
 		rigidBody rbo = { bodyInfo, objectNode.oId };
@@ -78,12 +78,12 @@ void MlfrsSimbody::createBox(MdlParser::mdl_object object, ObjectNode objectNode
 void MlfrsSimbody::createSphere(MdlParser::mdl_object object, ObjectNode objectNode) {
 	std::cout << "MlfrsSimbody::createSphere - object : " << objectNode.oId << std::endl;
 	try {
-	    Body::Rigid bodyInfo(MassProperties(object.mass, Vec3(0), object.mass * UnitInertia::brick(
-			Vec3(object.dimension[0]))));
+	    Body::Rigid bodyInfo(MassProperties(objectNode.mass, Vec3(0), objectNode.mass * UnitInertia::brick(
+			Vec3(objectNode.dimensions[0]))));
 		bodyInfo.addDecoration(Transform(), 
-			DecorativeSphere(object.dimension[0]).setOpacity(0.4));
+			DecorativeSphere(objectNode.dimensions[0]).setOpacity(0.4));
 		bodyInfo.addContactSurface(Transform(),
-				ContactSurface(ContactGeometry::Sphere(object.dimension[0]), material)
+				ContactSurface(ContactGeometry::Sphere(objectNode.dimensions[0]), material)
 		);
 		rigidBody rbo = { bodyInfo, objectNode.oId };
 	 	rigidBodies.push_back(rbo);
@@ -97,16 +97,16 @@ void MlfrsSimbody::createSphere(MdlParser::mdl_object object, ObjectNode objectN
 void MlfrsSimbody::createCylinder(MdlParser::mdl_object object, ObjectNode objectNode) {
 	std::cout << "MlfrsSimbody::createCylinder - object : " << objectNode.oId << std::endl;
 	try {
-	    Body::Rigid bodyInfo(MassProperties( object.mass, Vec3(0),
-			object.mass * UnitInertia::brick(
-				Vec3(object.dimension[0],object.dimension[1],object.dimension[2]))));
+	    Body::Rigid bodyInfo(MassProperties( objectNode.mass, Vec3(0),
+			objectNode.mass * UnitInertia::brick(
+				Vec3(objectNode.dimensions[0],objectNode.dimensions[1],objectNode.dimensions[2]))));
 		bodyInfo.addDecoration(Transform(), DecorativeCylinder(
-			object.dimension[0], object.dimension[1]).setOpacity(0.4));
+			objectNode.dimensions[0], objectNode.dimensions[1]).setOpacity(0.4));
 		// looks like they don't have a proper cylinder contact body..
 		// use brick instead
 		bodyInfo.addContactSurface(Transform(),
 			ContactSurface(ContactGeometry::Brick(Vec3(
-				object.dimension[0], object.dimension[1], object.dimension[2])), material)
+				objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2])), material)
 		);
 		//.joinClique(defaultClique));
 		rigidBody rbo = { bodyInfo, objectNode.oId };
@@ -133,14 +133,11 @@ void MlfrsSimbody::createFreeJoint(MdlParser::mdl_joint joint, ObjectNode object
 		}
 	}
 	SimTK::MobilizedBody::Free physicsBody(matter.Ground(), Transform( 
-		Vec3(0)),
-		rigidBodyA, Transform( rYdown, 
+		Vec3(0)), rigidBodyA, Transform(
+		rYdown, 
 		Vec3(joint.primary_position[0],
 			 joint.primary_position[1],
 			 joint.primary_position[2])));
-//		Vec3(objectNodeA.modelobject.position[0], 
-//			 objectNodeA.modelobject.position[1], 
-//			 objectNodeA.modelobject.position[2])));
 	simbodyObject sbo = { physicsBody, "free", objectNodeA.oId, 0 };
  	simbodyObjects.push_back(sbo);
 }
@@ -168,10 +165,22 @@ void MlfrsSimbody::createBallJoint(MdlParser::mdl_joint joint, ObjectNode object
 		}
 	}
 	SimTK::MobilizedBody::Ball physicsBody(mobilizedBody, Transform(
-		Vec3(joint.primary_position[0], 
-		joint.primary_position[1],
-		joint.primary_position[2])),
-		bodyInfo, Transform( rYdown, 
+		Rotation(
+			Quaternion(
+				Vec4(objectNodeA.rotation[0],
+					 objectNodeA.rotation[1],
+					 objectNodeA.rotation[2],
+					 objectNodeA.rotation[3]))),
+		Vec3(joint.primary_position[0],
+			 joint.primary_position[1],
+			 joint.primary_position[2])),
+		bodyInfo, Transform(
+		Rotation(
+			Quaternion(
+				Vec4(objectNodeB.rotation[0],
+					 objectNodeB.rotation[1],
+					 objectNodeB.rotation[2],
+					 objectNodeB.rotation[3]))),
 		Vec3(joint.secondary_position[0],
 			 joint.secondary_position[1],
 			 joint.secondary_position[2])));

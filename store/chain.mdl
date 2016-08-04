@@ -5,7 +5,7 @@
 			"physics_shape" : "sphere",
 			"mass" : "5.0",
 			"dimension" : [ "1.0" ],
-			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"rotation" : [ "0.707100", "0.00000", "0.000000", "0.707100" ],
 			"position" : [ "0.0", "5.0", "0.0" ]
 		},
 		"bodyB" : {
@@ -13,7 +13,7 @@
 			"physics_shape" : "sphere",
 			"mass" : "5.0",
 			"dimension" : [ "1.0" ],
-			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"rotation" : [ "0.707100", "0.00000", "0.000000", "0.707100" ],
 			"position" : [ "0.0", "10.0", "1.0" ]
 		},
 		"bodyC" : {
@@ -21,7 +21,7 @@
 			"physics_shape" : "sphere",
 			"mass" : "5.0",
 			"dimension" : [ "1.0" ],
-			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"rotation" : [ "0.707100", "0.00000", "0.000000", "0.707100" ],
 			"position" : [ "0.0", "15.0", "0.0" ]
 		},
 		"bodyD" : {
@@ -29,7 +29,7 @@
 			"physics_shape" : "sphere",
 			"mass" : "5.0",
 			"dimension" : [ "1.0" ],
-			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"rotation" : [ "0.707100", "0.00000", "0.000000", "0.707100" ],
 			"position" : [ "0.0", "20.0", "0.0" ]
 		},
 		"bodyE" : {
@@ -37,7 +37,7 @@
 			"physics_shape" : "sphere",
 			"mass" : "5.0",
 			"dimension" : [ "1.0" ],
-			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"rotation" : [ "0.707100", "0.00000", "0.000000", "0.707100" ],
 			"position" : [ "0.0", "25.0", "0.0" ]
 		}
 	},
@@ -46,7 +46,7 @@
 			"joint_type" : "free",
 			"primary_object" : "bodyA",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "0.0", "0.0" ]
+			"primary_position" : [ "0.0", "15.0", "10.0" ]
 		},
 		"contraintB" : {
 			"joint_type" : "ball",
@@ -54,7 +54,7 @@
 			"secondary_object" : "bodyB",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "2.0", "2.0", "2.0" ],
+			"primary_position" : [ "0.0", "3.0", "0.0" ],
 			"secondary_position" : [ "0.0", "0.0", "0.0" ]
 		},
 		"contraintC" : {
@@ -63,7 +63,7 @@
 			"secondary_object" : "bodyC",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "2.0", "2.0", "2.0" ],
+			"primary_position" : [ "0.0", "3.0", "0.0" ],
 			"secondary_position" : [ "0.0", "0.0", "0.0" ]
 		},
 		"contraintD" : {
@@ -72,7 +72,7 @@
 			"secondary_object" : "bodyD",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "2.0", "2.0", "2.0" ],
+			"primary_position" : [ "0.0", "3.0", "0.0" ],
 			"secondary_position" : [ "0.0", "0.0", "0.0" ]
 		},
 		"contraintE" : {
@@ -81,7 +81,7 @@
 			"secondary_object" : "bodyE",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "2.0", "2.0", "2.0" ],
+			"primary_position" : [ "0.0", "3.0", "0.0" ],
 			"secondary_position" : [ "0.0", "0.0", "0.0" ]
 		}
 	}

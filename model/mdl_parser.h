@@ -45,7 +45,7 @@ class MdlParser {
 		std::string light_type;
 		float mass;
 		float dimension[3];
-		float rotation[3];
+		float rotation[4];
 		float position[3];
 		float angular[3];
 		float diffuse[3];
