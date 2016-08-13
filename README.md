@@ -8,7 +8,7 @@
     - Software Requirements. The Makefile assumes all packages should be available via pkg-config
 
     - Google Protobuffers https://developers.google.com/protocol-buffers/
-		- Protobuffers are used as a message passing interface between our components.
+		# Protobuffers are used as a message passing interface between our components.
 		# Be sure to install protobuf 3.0 or greater.
         $ sudo apt-get install libprotobuf-dev
         # or build from source with cmake by following 'protobuf/src/README.md'
@@ -22,9 +22,9 @@
 		$ sudo ldconfig # refresh shared library cache.
 
 	- GRPC http://www.grpc.io/
-		- GRPC enables client server communications.
+		# GRPC enables client server communications.
 		# Install instructions are here.
-		https://github.com/grpc/grpc/tree/release-0_14/src/cpp
+		# https://github.com/grpc/grpc/tree/release-0_14/src/cpp
 		# If you want to install it in /usr rather than /usr/local
 		# Edit the Makefile:258 and change 'prefix ?= /usr/local' to 'prefix ?= /usr'
 		$ git clone https://github.com/grpc/grpc.git
@@ -33,7 +33,7 @@
 		$ sudo make install
 		
     - Simbody https://github.com/simbody/simbody/releases
-		- Simbody is our primary physics simulating software (TODO: add bullet)
+		# Simbody is our primary physics simulating software (TODO: add bullet)
         # Simbody is big and you may have some issues bulding it.
         # You may need to install some other dependencies for visualization(glut) 
 		# and documentation(doxygen)
@@ -75,13 +75,13 @@
 		# runtime application directory.
 
     - jsoncpp https://github.com/open-source-parsers/jsoncpp
-		- Json is nicely readable, currently using for robot model format.
+		# Json is nicely readable, currently using for robot model format.
 		#(required scons) I built from source, but should be something like.
 		$ sudo apt-get install scons
 		$ sudo apt-get install libjsoncpp-dev
 
 	- Eigen3 https://github.com/open-source-parsers/jsoncpp
-		- Excellent linear algebra library.
+		# Excellent linear algebra library.
 		# recomment build from source but should easily installed with
 		$ sudo apt-get install libeigen3-dev
 
