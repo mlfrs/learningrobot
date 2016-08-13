@@ -38,6 +38,9 @@ void Physics::createObject(MdlParser::mdl_object M, ObjectNode O) {
 	} else if (M.physics_shape == "cylinder") {
 		std::cout << "Physics::createObject cylinder " << std::endl;
 		phyEng->createCylinder(M,O);
+	} else if (M.physics_shape == "ellipsoid") {
+		std::cout << "Physics::createObject ellipsoid " << std::endl;
+		phyEng->createEllipsoid(M,O);
 	}
 }
 

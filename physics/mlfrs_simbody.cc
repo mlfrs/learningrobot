@@ -9,6 +9,7 @@
  */
 
 #include "mlfrs_simbody.h"
+#include "simbody_input_handler.h"
 #include "Simbody.h"
 #include "SimTKsimbody.h"
 #include "simbody/internal/ForceSubsystemGuts.h"
@@ -22,7 +23,7 @@ const float TRANSITION_VELOCITY = 1e-3;
 const float GRAVITY = -9.81;
 const float FRAME_RATE = 30;
 float INTERVAL = 0;
-const float STEP_SIZE = 0.01;
+const float STEP_SIZE = 1000.01;
 const bool TRACK_DISSIPATED_ENERGY = true;
 const Rotation rXdown(-Pi/2,ZAxis);
 const Rotation rYdown(-Pi,ZAxis);
@@ -31,6 +32,12 @@ ContactCliqueId defaultClique = ContactSurface::createNewContactClique();
 
 // generic material. todo: these should be loaded externally.
 ContactMaterial material(0.02*1e7,	// stiffness
+						 0.9,		// dissipation
+						 0.8,		// mu_static
+						 0.6,		// mu_dynamic
+						 1);		// mu_viscous
+
+ContactMaterial materialB(0.02*1e7,	// stiffness
 						 0.9,		// dissipation
 						 0.8,		// mu_static
 						 0.6,		// mu_dynamic
@@ -53,41 +60,19 @@ MlfrsSimbody::MlfrsSimbody() :	matter(simbody_sys),
 
 // const System::Guts &ggg = simbody_sys.getSystemGuts();
 
-void MlfrsSimbody::createBox(MdlParser::mdl_object object, ObjectNode objectNode) {
-	std::cout << "MlfrsSimbody::createBox - object : " << objectNode.oId << std::endl;
-	try {
-	    Body::Rigid bodyInfo(MassProperties(objectNode.mass, Vec3(0), objectNode.mass * UnitInertia::brick(
-			Vec3(objectNode.dimensions[0],objectNode.dimensions[1],objectNode.dimensions[2]))));
-		bodyInfo.addDecoration(Transform(), DecorativeBrick(
-				Vec3(objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2]))
-			.setOpacity(0.4));
-		bodyInfo.addContactSurface(Transform(),
-				ContactSurface(ContactGeometry::Brick(
-					Vec3(objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2])),
-				material)
-		);
-		rigidBody rbo = { bodyInfo, objectNode.oId };
-	 	rigidBodies.push_back(rbo);
-		//.joinClique(defaultClique));
-	} catch (const std::exception& e) {
-		std::cout << "Error in createBox() : " << e.what() << std::endl;
-		exit;
-	}
-}
-
 void MlfrsSimbody::createSphere(MdlParser::mdl_object object, ObjectNode objectNode) {
 	std::cout << "MlfrsSimbody::createSphere - object : " << objectNode.oId << std::endl;
+	std::cout << "MlfrsSimbody::createSphere - object : " << objectNode.name << std::endl;
 	try {
 	    Body::Rigid bodyInfo(MassProperties(objectNode.mass, Vec3(0), objectNode.mass * UnitInertia::brick(
 			Vec3(objectNode.dimensions[0]))));
 		bodyInfo.addDecoration(Transform(), 
 			DecorativeSphere(objectNode.dimensions[0]).setOpacity(0.4));
 		bodyInfo.addContactSurface(Transform(),
-				ContactSurface(ContactGeometry::Sphere(objectNode.dimensions[0]), material)
+				ContactSurface(ContactGeometry::Sphere(objectNode.dimensions[0]), material, 0.5)
 		);
 		rigidBody rbo = { bodyInfo, objectNode.oId };
 	 	rigidBodies.push_back(rbo);
-		//.joinClique(defaultClique));
 	} catch (const std::exception& e) {
 		std::cout << "Error in createSphere() : " << e.what() << std::endl;
 		exit;
@@ -96,19 +81,22 @@ void MlfrsSimbody::createSphere(MdlParser::mdl_object object, ObjectNode objectN
 
 void MlfrsSimbody::createCylinder(MdlParser::mdl_object object, ObjectNode objectNode) {
 	std::cout << "MlfrsSimbody::createCylinder - object : " << objectNode.oId << std::endl;
+	std::cout << "MlfrsSimbody::createCylinder - object : " << objectNode.name << std::endl;
 	try {
+		ContactGeometry::TriangleMesh cylinderMesh(PolygonalMesh::createCylinderMesh(YAxis,
+			objectNode.dimensions[0],objectNode.dimensions[1],10));
+
 	    Body::Rigid bodyInfo(MassProperties( objectNode.mass, Vec3(0),
 			objectNode.mass * UnitInertia::brick(
-				Vec3(objectNode.dimensions[0],objectNode.dimensions[1],objectNode.dimensions[2]))));
+				Vec3(objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2]))));
 		bodyInfo.addDecoration(Transform(), DecorativeCylinder(
 			objectNode.dimensions[0], objectNode.dimensions[1]).setOpacity(0.4));
-		// looks like they don't have a proper cylinder contact body..
+		// there is no primative cylinder... it's possible to use TriangleMesh geometry instead..
 		// use brick instead
 		bodyInfo.addContactSurface(Transform(),
-			ContactSurface(ContactGeometry::Brick(Vec3(
-				objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2])), material)
-		);
-		//.joinClique(defaultClique));
+			ContactSurface(cylinderMesh, materialB, 0.5));
+//			ContactSurface(ContactGeometry::Brick(Vec3(
+//				objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2])), materialB, 0.5));
 		rigidBody rbo = { bodyInfo, objectNode.oId };
 	 	rigidBodies.push_back(rbo);
 	} catch (const std::exception& e) {
@@ -117,29 +105,99 @@ void MlfrsSimbody::createCylinder(MdlParser::mdl_object object, ObjectNode objec
 	}
 }
 
+void MlfrsSimbody::createBox(MdlParser::mdl_object object, ObjectNode objectNode) {
+	std::cout << "MlfrsSimbody::createBox - object : " << objectNode.oId << std::endl;
+	std::cout << "MlfrsSimbody::createBox - object : " << objectNode.name << std::endl;
+	try {
+
+//		ContactGeometry::TriangleMesh brickMesh(PolygonalMesh::createBrickMesh(
+//			Vec3(objectNode.dimensions[0],objectNode.dimensions[1],objectNode.dimensions[2]),10));
+
+	    Body::Rigid bodyInfo(MassProperties(objectNode.mass, Vec3(0), objectNode.mass * UnitInertia::brick(
+			Vec3(objectNode.dimensions[0],objectNode.dimensions[1],objectNode.dimensions[2]))));
+		bodyInfo.addDecoration(Transform(), DecorativeBrick(
+				Vec3(objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2]))
+			.setOpacity(0.4));
+		bodyInfo.addContactSurface(Transform(),
+//				ContactSurface(brickMesh, materialB, 0.5));
+				ContactSurface(ContactGeometry::Brick(
+					Vec3(objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2])),
+					material, 0.5));
+		rigidBody rbo = { bodyInfo, objectNode.oId };
+	 	rigidBodies.push_back(rbo);
+
+	} catch (const std::exception& e) {
+		std::cout << "Error in createBox() : " << e.what() << std::endl;
+		exit;
+	}
+}
+
+void MlfrsSimbody::createEllipsoid(MdlParser::mdl_object object, ObjectNode objectNode) {
+	std::cout << "MlfrsSimbody::createBox - object : " << objectNode.oId << std::endl;
+	std::cout << "MlfrsSimbody::createBox - object : " << objectNode.name << std::endl;
+	try {
+
+	    Body::Rigid bodyInfo(MassProperties(objectNode.mass, Vec3(0), objectNode.mass * UnitInertia::brick(
+			Vec3(objectNode.dimensions[0],objectNode.dimensions[1],objectNode.dimensions[2]))));
+		bodyInfo.addDecoration(Transform(), DecorativeEllipsoid(
+				Vec3(objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2]))
+			.setOpacity(0.4));
+		bodyInfo.addContactSurface(Transform(),
+//				ContactSurface(brickMesh, materialB, 0.5));
+				ContactSurface(ContactGeometry::Ellipsoid(
+					Vec3(objectNode.dimensions[0], objectNode.dimensions[1], objectNode.dimensions[2])),
+					material, 0.5));
+		rigidBody rbo = { bodyInfo, objectNode.oId };
+	 	rigidBodies.push_back(rbo);
+
+	} catch (const std::exception& e) {
+		std::cout << "Error in createBox() : " << e.what() << std::endl;
+		exit;
+	}
+}
+
 /*
  * We need other types of contraints but this is the general idea.
- * For this use case just say a free joint is always connected with ground
  */
-void MlfrsSimbody::createFreeJoint(MdlParser::mdl_joint joint, ObjectNode objectNodeA, ObjectNode objectNodeB) {
-	Body::Rigid rigidBodyA, rigidBodyB;
+void MlfrsSimbody::createFreeJoint(MdlParser::mdl_joint joint, ObjectNode objectNode) {
+	Body::Rigid rigidBody_;
+	std::cout << "MlfrsSimbody::createFreeJoint : " << objectNode.name << std::endl;
 	for(std::vector<rigidBody>::iterator it = rigidBodies.begin();
 		it != rigidBodies.end(); ++it) {
-		if ((*it).id == objectNodeA.oId) {
-			rigidBodyA = (*it).rBody;
-		}
-		if ((*it).id == objectNodeB.oId) {
-			rigidBodyB = (*it).rBody;
+		if ((*it).id == objectNode.oId) {
+			rigidBody_ = (*it).rBody;
 		}
 	}
 	SimTK::MobilizedBody::Free physicsBody(matter.Ground(), Transform( 
-		Vec3(0)), rigidBodyA, Transform(
+		Vec3(objectNode.position[0], objectNode.position[1], objectNode.position[2])), 
+		rigidBody_, Transform(
 		rYdown, 
 		Vec3(joint.primary_position[0],
 			 joint.primary_position[1],
 			 joint.primary_position[2])));
-	simbodyObject sbo = { physicsBody, "free", objectNodeA.oId, 0 };
+	simbodyObject sbo = { physicsBody, "free", objectNode.oId, 0 };
  	simbodyObjects.push_back(sbo);
+}
+
+SimTK::MobilizedBody::Free MlfrsSimbody::createDefaultBody(MdlParser::mdl_joint joint, ObjectNode objectNode) {
+	Body::Rigid rigidBody_;
+	std::cout << "MlfrsSimbody::createFreeJoint : " << objectNode.name << std::endl;
+	for(std::vector<rigidBody>::iterator it = rigidBodies.begin();
+		it != rigidBodies.end(); ++it) {
+		if ((*it).id == objectNode.oId) {
+			rigidBody_ = (*it).rBody;
+		}
+	}
+	SimTK::MobilizedBody::Free physicsBody(matter.Ground(), Transform( 
+		Vec3(objectNode.position[0], objectNode.position[1], objectNode.position[2])), 
+		rigidBody_, Transform(
+		rYdown, 
+		Vec3(joint.primary_position[0],
+			 joint.primary_position[1],
+			 joint.primary_position[2])));
+	simbodyObject sbo = { physicsBody, "free", objectNode.oId, 0 };
+ 	simbodyObjects.push_back(sbo);
+	return physicsBody;
 }
 
 /*
@@ -148,6 +206,8 @@ void MlfrsSimbody::createFreeJoint(MdlParser::mdl_joint joint, ObjectNode object
  * The secondard object (B) is the Body::Rigid
  */
 void MlfrsSimbody::createBallJoint(MdlParser::mdl_joint joint, ObjectNode objectNodeA, ObjectNode objectNodeB) {
+	std::cout << "createBallJoint objectNodeA.name " << objectNodeA.name << std::endl;
+	std::cout << "createBallJoint objectNodeB.name " << objectNodeB.name << std::endl;
 	SimTK::MobilizedBody mobilizedBody;
 	for(std::vector<simbodyObject>::iterator it = simbodyObjects.begin();
 		it != simbodyObjects.end(); ++it) {
@@ -155,6 +215,10 @@ void MlfrsSimbody::createBallJoint(MdlParser::mdl_joint joint, ObjectNode object
 			mobilizedBody = (*it).mBody;
 			std::cout << "objectNodeA.oId " << objectNodeA.oId << std::endl;
 		}
+	}
+	if (!mobilizedBody.isInSubsystem()) {
+		std::cout << "Does not exist - create free" << std::endl;
+		mobilizedBody = createDefaultBody(joint, objectNodeA);
 	}
 	Body::Rigid bodyInfo;
 	for(std::vector<rigidBody>::iterator it = rigidBodies.begin();
@@ -186,6 +250,7 @@ void MlfrsSimbody::createBallJoint(MdlParser::mdl_joint joint, ObjectNode object
 			 joint.secondary_position[2])));
 	simbodyObject sbo = { physicsBody, "ball", objectNodeB.oId, 0 };
  	simbodyObjects.push_back(sbo);
+	std::cout << " - - - -  " << std::endl;
 }
 
 /*
@@ -202,7 +267,6 @@ ObjectNode MlfrsSimbody::getStatefulObjectNode(ObjectNode node) {
 		"' with id " << node.oId << "not found" << std::endl;
 	return ObjectNode();
 }
-
 
 /*
  * Function to return an object node with the current state.
@@ -271,14 +335,20 @@ void MlfrsSimbody::printContactSurfaces() {
 	}
 }
 
+void MlfrsSimbody::inputHandler() {
+	simbody_sys.addEventHandler(new SimbodyInputHandler(*silo, Real(0.1))); 
+}
+
 void MlfrsSimbody::visualize() {
 	try {
+		silo = new Visualizer::InputSilo();
 		Visualizer viz(simbody_sys);
 		viz.setMode(Visualizer::RealTime);
 		viz.setDesiredBufferLengthInSec(1);
 		viz.setDesiredFrameRate(FRAME_RATE);
 		viz.setGroundHeight(0);
 		viz.setShowShadows(true);
+		viz.addInputListener(silo);
 		simbody_sys.addEventReporter(new Visualizer::Reporter(viz, 0.01));
 	} catch (const std::exception& e) {
 		exit;
@@ -306,9 +376,13 @@ void MlfrsSimbody::init() {
 		 * Simbody requires this sequence(integrator/state) 
 		 * before we can query the simulation.
 		 */
+
 		setup();
 		visualize();
+		inputHandler();
 		realize();
+//		silo->waitForAnyUserInput(); 
+//		silo->clear();
 
 		// Here we iterate over all simbody objects and apply any extra runtime parameters.
 		for(std::vector<simbodyObject>::iterator it = simbodyObjects.begin(); it != simbodyObjects.end(); ++it) {
@@ -335,6 +409,7 @@ void MlfrsSimbody::init() {
  * Step the simulation.
  */
 void MlfrsSimbody::run() {
+	silo->clear();
 	timestep.stepTo(INTERVAL+=STEP_SIZE);
 }
 

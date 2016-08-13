@@ -10,8 +10,8 @@
 
 #include "../model/mdl_parser.h"
 #include "../object_node.h"
-#include "Simbody.h"
 #include "physics_engine.h"
+#include "Simbody.h"
 #include <vector>
 
 class MlfrsSimbody : public PhysicsEngine {
@@ -27,6 +27,9 @@ private:
 	SimTK::CPodesIntegrator integ;
 	SimTK::TimeStepper timestep;
 
+	// Visualizer::InputSilo* silo = new Visualizer::InputSilo();
+	SimTK::Visualizer::InputSilo* silo;
+
 	struct simbodyObject {
 		SimTK::MobilizedBody mBody;
 		std::string type;
@@ -41,11 +44,13 @@ private:
 	};
 	std::vector<rigidBody> rigidBodies;
 
+	void inputHandler();
 	void visualize();
 	void realize();
 	void setup();
 	void init();
 	void ruu();
+	SimTK::MobilizedBody::Free createDefaultBody(MdlParser::mdl_joint joint, ObjectNode objectNode);
 
 public:
 	MlfrsSimbody();
@@ -54,10 +59,11 @@ public:
 	void createBox(MdlParser::mdl_object object, ObjectNode objectNode);
 	void createSphere(MdlParser::mdl_object object, ObjectNode objectNode);
 	void createCylinder(MdlParser::mdl_object object, ObjectNode objectNode);
+	void createEllipsoid(MdlParser::mdl_object object, ObjectNode objectNode);
 	ObjectNode getStatefulObjectNode(ObjectNode objectNode);
 	ObjectNode buildObjectNode(ObjectNode objectNode, SimTK::MobilizedBody mBody);
 	void createJoint(MdlParser::mdl_joint joint, ObjectNode objectNodeA, ObjectNode objectNodeB);
-	void createFreeJoint(MdlParser::mdl_joint joint, ObjectNode objectNodeA, ObjectNode objectNodeB);
+	void createFreeJoint(MdlParser::mdl_joint joint, ObjectNode objectNode);
 	void createBallJoint(MdlParser::mdl_joint joint, ObjectNode objectNodeA, ObjectNode objectNodeB);
 	void printContactSurfaces();
 	void run();

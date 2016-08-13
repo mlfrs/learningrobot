@@ -45,8 +45,8 @@ LINKER = $(COMPILER) $(LINKOPTS) $(LD_FLAGS)
 # Compile main / mlfrs
 #
 
-all : main.o someclass.o physics.o mlfrs_simbody.o model_parser.o object_manager.o
-	${LINKER} -o mlfrs $(BUILDDIR)main.o $(BUILDDIR)someclass.o $(BUILDDIR)physics.o $(BUILDDIR)mlfrs_simbody.o $(BUILDDIR)model_parser.o $(BUILDDIR)object_manager.o
+all : main.o someclass.o physics.o mlfrs_simbody.o model_parser.o object_manager.o simbody_input_handler.o
+	${LINKER} -o mlfrs $(BUILDDIR)main.o $(BUILDDIR)someclass.o $(BUILDDIR)physics.o $(BUILDDIR)mlfrs_simbody.o $(BUILDDIR)model_parser.o $(BUILDDIR)object_manager.o $(BUILDDIR)simbody_input_handler.o
 
 #
 # Compile modules
@@ -60,6 +60,9 @@ physics.o : physics/physics.cc physics/physics.h
 
 mlfrs_simbody.o : physics/mlfrs_simbody.cc physics/mlfrs_simbody.h
 	${COMPILE} physics/mlfrs_simbody.cc
+
+simbody_input_handler.o : physics/simbody_input_handler.cc physics/simbody_input_handler.h
+	${COMPILE} physics/simbody_input_handler.cc
 
 model_parser.o : model/mdl_parser.cc model/mdl_parser.h 
 	${COMPILE} model/mdl_parser.cc

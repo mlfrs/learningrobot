@@ -52,8 +52,8 @@ int main(int argc, char* argv[]) {
 		 * the physics engine to get the updated object state 
 		 * and print out the position and rotation.
 		 */
-		objectManager->getObject(1);
-		objectManager->getObject(2);
+	//	objectManager->getObject(1);
+	//	objectManager->getObject(2);
 	}
 
 	delete physics;

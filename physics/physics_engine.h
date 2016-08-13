@@ -15,6 +15,7 @@ public:
 	virtual void createBox(MdlParser::mdl_object object, ObjectNode objectNode){}
 	virtual void createSphere(MdlParser::mdl_object object, ObjectNode objectNode){}
 	virtual void createCylinder(MdlParser::mdl_object object, ObjectNode objectNode){}
+	virtual void createEllipsoid(MdlParser::mdl_object object, ObjectNode objectNode){}
 	virtual void run(){}
 	virtual void init(){}
 	virtual ObjectNode getStatefulObjectNode(ObjectNode O){}

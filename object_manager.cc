@@ -104,7 +104,7 @@ void ObjectManager::getObject(int oid, bool update) {
 	} else {
 		physics.getObjectNode(objects.at(oid));
 	}
-	/*
+
 	std::cout << " - Object Position " << std::endl;
 	std::cout << objects.at(oid).position << std::endl;
 	std::cout << " - Object Rotation " << std::endl;
@@ -117,7 +117,7 @@ void ObjectManager::getObject(int oid, bool update) {
 	std::cout << objects.at(oid).angular_velocity << std::endl;
 	std::cout << " - Object Angular Acceleration " << std::endl;
 	std::cout << objects.at(oid).angular_acceleration << std::endl;
-	*/
+
 }
 
 void ObjectManager::togglePhysicsVisibility(){

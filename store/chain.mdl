@@ -14,7 +14,7 @@
 			"mass" : "5.0",
 			"dimension" : [ "1.0" ],
 			"rotation" : [ "0.707100", "0.00000", "0.000000", "0.707100" ],
-			"position" : [ "0.0", "10.0", "1.0" ]
+			"position" : [ "0.0", "10.0", "0.0" ]
 		},
 		"bodyC" : {
 			"graphics_mesh" : "head",
@@ -43,46 +43,40 @@
 	},
 	"joints" : {
 		"contraintA" : {
-			"joint_type" : "free",
-			"primary_object" : "bodyA",
-			"primary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "15.0", "10.0" ]
-		},
-		"contraintB" : {
 			"joint_type" : "ball",
 			"primary_object" : "bodyA",
 			"secondary_object" : "bodyB",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "3.0", "0.0" ],
-			"secondary_position" : [ "0.0", "0.0", "0.0" ]
+			"primary_position" : [ "0.0", "0.0", "0.0" ],
+			"secondary_position" : [ "0.0", "3.0", "0.0" ]
 		},
-		"contraintC" : {
+		"contraintB" : {
 			"joint_type" : "ball",
 			"primary_object" : "bodyB",
 			"secondary_object" : "bodyC",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "3.0", "0.0" ],
-			"secondary_position" : [ "0.0", "0.0", "0.0" ]
+			"primary_position" : [ "0.0", "0.0", "0.0" ],
+			"secondary_position" : [ "0.0", "3.0", "0.0" ]
 		},
-		"contraintD" : {
+		"contraintC" : {
 			"joint_type" : "ball",
 			"primary_object" : "bodyC",
 			"secondary_object" : "bodyD",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "3.0", "0.0" ],
-			"secondary_position" : [ "0.0", "0.0", "0.0" ]
+			"primary_position" : [ "0.0", "0.0", "0.0" ],
+			"secondary_position" : [ "0.0", "3.0", "0.0" ]
 		},
-		"contraintE" : {
+		"contraintD" : {
 			"joint_type" : "ball",
 			"primary_object" : "bodyD",
 			"secondary_object" : "bodyE",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "3.0", "0.0" ],
-			"secondary_position" : [ "0.0", "0.0", "0.0" ]
+			"primary_position" : [ "0.0", "0.0", "0.0" ],
+			"secondary_position" : [ "0.0", "3.0", "0.0" ]
 		}
 	}
 }

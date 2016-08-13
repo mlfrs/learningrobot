@@ -5,51 +5,51 @@
 			"physics_shape" : "sphere",
 			"mass" : "5.0",
 			"dimension" : [ "1.0" ],
-			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
-			"position" : [ "0.0", "20.5", "0.0" ]
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
+			"position" : [ "0.0", "21.0", "0.0" ]
 		},
 		"body" : {
 			"graphics_mesh" : "body",
-			"physics_shape" : "box",
+			"physics_shape" : "ellipsoid",
 			"mass" : "40.0",
 			"dimension" : [ "1.8", "4.0", "0.7" ],
-			"rotation" : [ "0.00000", "0.00000", "0.000000", "1.000000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "0.0", "15.0", "0.0" ]
 		},
 		"right_upperarm" : {
 			"graphics_mesh" : "arm",
-			"physics_shape" : "cylinder",
+			"physics_shape" : "ellipsoid",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
 			"dimension" : [ "0.50000", "2.00000", "0.60000" ],
-			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "-3.0", "16.5", "0.0" ]
 		},
 		"left_upperarm" : {
 			"graphics_mesh" : "arm",
-			"physics_shape" : "cylinder",
+			"physics_shape" : "ellipsoid",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
 			"dimension" : [ "0.50000", "2.00000", "0.60000" ],
-			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "3.0", "16.5", "0.0" ]
 		},
 		"right_forearm" : {
 			"graphics_mesh" : "arm",
-			"physics_shape" : "cylinder",
+			"physics_shape" : "ellipsoid",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
 			"dimension" : [ "0.40000", "2.00000", "0.60000" ],
-			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "-3.0", "12.3", "0.0" ]
 		},
 		"left_forearm" : {
 			"graphics_mesh" : "arm",
-			"physics_shape" : "cylinder",
+			"physics_shape" : "ellipsoid",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
 			"dimension" : [ "0.40000", "2.00000", "0.60000" ],
-			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "3.0", "12.3", "0.0" ]
 		},
 		"right_hand" : {
@@ -72,38 +72,38 @@
 		},
 		"right_upperleg" : {
 			"graphics_mesh" : "leg",
-			"physics_shape" : "cylinder",
+			"physics_shape" : "ellipsoid",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
 			"dimension" : [ "0.50000", "2.00000", "0.60000" ],
-			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "-1.5", "8.5", "0.0" ]
 		},
 		"left_upperleg" : {
 			"graphics_mesh" : "leg",
-			"physics_shape" : "cylinder",
+			"physics_shape" : "ellipsoid",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
 			"dimension" : [ "0.50000", "2.00000", "0.60000" ],
-			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "1.5", "8.5", "0.0" ]
 		},
 		"right_foreleg" : {
 			"graphics_mesh" : "leg",
-			"physics_shape" : "cylinder",
+			"physics_shape" : "ellipsoid",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
 			"dimension" : [ "0.40000", "2.00000", "0.60000" ],
-			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "-1.5", "4.0", "0.0" ]
 		},
 		"left_foreleg" : {
 			"graphics_mesh" : "leg",
-			"physics_shape" : "cylinder",
+			"physics_shape" : "ellipsoid",
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
 			"dimension" : [ "0.40000", "2.00000", "0.60000" ],
-			"rotation" : [ "1.00000", "100.00000", "0.000000", "0.000000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "1.5", "4.0", "0.0" ]
 		},
 		"right_foot" : {
@@ -112,7 +112,7 @@
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
 			"dimension" : [ "0.50000", "0.20000", "1.50000" ],
-			"rotation" : [ "1.00000", "0.00000", "0.000000", "1.570000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "-1.5", "1.4", "-1.0" ]
 		},
 		"left_foot" : {
@@ -121,127 +121,133 @@
 			"mass" : "1.0",
 			"angular_dof" : [ "1", "1", "1" ],
 			"dimension" : [ "0.50000", "0.20000", "1.50000" ],
-			"rotation" : [ "1.00000", "0.00000", "0.000000", "1.570000" ],
+			"rotation" : [ "1.00000", "0.00000", "0.000000", "0.000000" ],
 			"position" : [ "1.5", "1.4", "-1.0" ]
 		}
 	},
 	"joints" : {
-		"neck" : {
-			"joint_type" : "hinge",
-			"primary_object" : "body",
-			"secondary_object" : "head",
+		"A free joint" : {
+			"joint_type" : "free",
+			"primary_object" : "head",
+			"primary_axis" : [ "1.0", "1.0", "1.0" ],
+			"primary_position" : [ "0.0", "0.0", "0.0" ]
+		},
+		"A neck" : {
+			"joint_type" : "ball",
+			"primary_object" : "head",
+			"secondary_object" : "body",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "4.5", "0.0" ],
-			"secondary_position" : [ "0.0", "-1.5", "0.0" ]
+			"primary_position" : [ "0.0", "1.5", "0.0" ],
+			"secondary_position" : [ "0.0", "-4.5", "0.0" ]
 		},
-		"right_shoulder" : {
-			"joint_type" : "hinge",
+		"B right_shoulder" : {
+			"joint_type" : "ball",
 			"primary_object" : "body",
 			"secondary_object" : "right_upperarm",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "-1.7", "3.8", "0.0" ],
-			"secondary_position" : [ "0.8", "1.8", "0.0" ]
+			"primary_position" : [ "-2.5", "-3.8", "0.0" ],
+			"secondary_position" : [ "0.0", "-2.0", "0.0" ]
 		},
-		"left_shoulder" : {
-			"joint_type" : "hinge",
+		"C left_shoulder" : {
+			"joint_type" : "ball",
 			"primary_object" : "body",
 			"secondary_object" : "left_upperarm",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "1.7", "3.8", "0.0" ],
-			"secondary_position" : [ "-0.8", "1.8", "0.0" ]
+			"primary_position" : [ "2.5", "-3.8", "0.0" ],
+			"secondary_position" : [ "0.0", "-2.0", "0.0" ]
 		},
-		"right_elbow" : {
-			"joint_type" : "hinge",
+		"D right_elbow" : {
+			"joint_type" : "ball",
 			"primary_object" : "right_upperarm",
 			"secondary_object" : "right_forearm",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "-2.2", "0.0" ],
-			"secondary_position" : [ "0.0", "2.2", "0.0" ]
+			"primary_position" : [ "0.0", "2.5", "0.0" ],
+			"secondary_position" : [ "0.0", "-2.0", "0.0" ]
 		},
-		"left_elbow" : {
-			"joint_type" : "hinge",
+		"E left_elbow" : {
+			"joint_type" : "ball",
 			"primary_object" : "left_upperarm",
 			"secondary_object" : "left_forearm",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "-2.2", "0.0" ],
-			"secondary_position" : [ "0.0", "2.2", "0.0" ]
+			"primary_position" : [ "0.0", "2.5", "0.0" ],
+			"secondary_position" : [ "0.0", "-2.0", "0.0" ]
 		},
-		"right_wrist" : {
-			"joint_type" : "hinge",
+		"F right_wrist" : {
+			"joint_type" : "ball",
 			"primary_object" : "right_forearm",
 			"secondary_object" : "right_hand",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "-2.1", "0.0" ],
-			"secondary_position" : [ "0.0", "1.1", "0.0" ]
+			"primary_position" : [ "0.0", "2.5", "0.0" ],
+			"secondary_position" : [ "0.0", "-1.0", "0.0" ]
 		},
-		"left_wrist" : {
-			"joint_type" : "hinge",
+		"G left_wrist" : {
+			"joint_type" : "ball",
 			"primary_object" : "left_forearm",
 			"secondary_object" : "left_hand",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "-2.1", "0.0" ],
-			"secondary_position" : [ "0.0", "1.1", "0.0" ]
+			"primary_position" : [ "0.0", "2.5", "0.0" ],
+			"secondary_position" : [ "0.0", "-1.0", "0.0" ]
 		},
-		"right_hip" : {
-			"joint_type" : "hinge",
+		"H right_hip" : {
+			"joint_type" : "ball",
 			"primary_object" : "body",
 			"secondary_object" : "right_upperleg",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "-1.0", "-4.5", "0.0" ],
-			"secondary_position" : [ "0.0", "2.5", "0.0" ]
+			"primary_position" : [ "-1.5", "4.0", "0.0" ],
+			"secondary_position" : [ "0.0", "-2.5", "0.0" ]
 		},
-		"left_hip" : {
-			"joint_type" : "hinge",
+		"I left_hip" : {
+			"joint_type" : "ball",
 			"primary_object" : "body",
 			"secondary_object" : "left_upperleg",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "1.0", "-4.5", "0.0" ],
-			"secondary_position" : [ "0.0", "2.5", "0.0" ]
+			"primary_position" : [ "1.5", "4.0", "0.0" ],
+			"secondary_position" : [ "0.0", "-2.5", "0.0" ]
 		},
-		"right_knee" : {
-			"joint_type" : "hinge",
+		"J right_knee" : {
+			"joint_type" : "ball",
 			"primary_object" : "right_upperleg",
 			"secondary_object" : "right_foreleg",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "-2.5", "0.0" ],
-			"secondary_position" : [ "0.0", "2.5", "0.0" ]
+			"primary_position" : [ "0.0", "2.0", "0.0" ],
+			"secondary_position" : [ "0.0", "-2.5", "0.0" ]
 		},
-		"left_knee" : {
-			"joint_type" : "hinge",
+		"K left_knee" : {
+			"joint_type" : "ball",
 			"primary_object" : "left_upperleg",
 			"secondary_object" : "left_foreleg",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "-2.5", "0.0" ],
-			"secondary_position" : [ "0.0", "2.5", "0.0" ]
+			"primary_position" : [ "0.0", "2.0", "0.0" ],
+			"secondary_position" : [ "0.0", "-2.5", "0.0" ]
 		},
-		"right_ankle" : {
-			"joint_type" : "hinge",
+		"L right_ankle" : {
+			"joint_type" : "ball",
 			"primary_object" : "right_foreleg",
 			"secondary_object" : "right_foot",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "-2.5", "0.0" ],
-			"secondary_position" : [ "0.0", "1.5", "0.0" ]
+			"primary_position" : [ "0.0", "2.0", "0.0" ],
+			"secondary_position" : [ "0.0", "-1.0", "0.0" ]
 		},
-		"left_ankle" : {
-			"joint_type" : "hinge",
+		"M left_ankle" : {
+			"joint_type" : "ball",
 			"primary_object" : "left_foreleg",
 			"secondary_object" : "left_foot",
 			"primary_axis" : [ "1.0", "1.0", "1.0" ],
 			"secondary_axis" : [ "1.0", "1.0", "1.0" ],
-			"primary_position" : [ "0.0", "-2.5", "0.0" ],
-			"secondary_position" : [ "0.0", "1.5", "0.0" ]
+			"primary_position" : [ "0.0", "2.0", "0.0" ],
+			"secondary_position" : [ "0.0", "-1.0", "0.0" ]
 		}
 	}
 }
