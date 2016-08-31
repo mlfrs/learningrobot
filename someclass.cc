@@ -2,5 +2,6 @@
 #include <iostream>
 
 someclass::someclass(int argc) {
-	std::cout << "hello robot" << std::endl;
+	std::cout << "hello ";
+    std::cout << "robot" << std::endl;
 }
